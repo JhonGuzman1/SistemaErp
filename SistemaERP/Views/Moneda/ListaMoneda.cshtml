@@ -1,0 +1,48 @@
+﻿@using Datos;
+@using Entidad.Estados;
+@model List<EmpresaMoneda>
+
+
+
+<table  class="table table-bordered table-hover" id="tabla_gestion">
+
+    <thead>
+        <tr>
+            <th>FECHA</th>
+            <th>MONEDA PRINCIPAL</th>
+            <th>MONEDA ALTERNATIVA</th>
+            <th>CAMBIO</th>
+            <th>ESTADO</th>
+           
+        </tr>
+    </thead>
+    <tbody>
+
+        @{
+            foreach (var i in Model)
+            {
+                <tr>
+
+                    <td>@i.FechaRegistro.ToString("dd/MM/yyyy")</td>
+                    <td>@i.Moneda.Abreviatura</td>
+                    <td>@(i.IdMonedaAlternativa!=null? i.Moneda1.Abreviatura:""  )</td>
+                    <td>@(i.Cambio!=null? i.Cambio.ToString():"" )</td>
+                    @{
+                        if (i.Activo == (int)EstadoMonedaEmpresa.Activo)
+                        {
+                            <td>Activo</td>
+                        }
+                        else if (i.Activo == (int)EstadoMonedaEmpresa.NoActivo)
+                        {
+                            <td>No Activo</td>
+                        }
+
+                    }                                       
+                   
+                </tr>
+            }
+        }
+
+    </tbody>
+
+</table>

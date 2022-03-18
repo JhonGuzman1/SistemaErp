@@ -1,0 +1,524 @@
+﻿@using Datos;
+@model List<Nota>
+@{
+    ViewBag.Title = "Nota Venta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section EtiquetaHead
+    {
+
+
+
+    <link href="@Url.Content("~/Content/adminLte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css")" rel="stylesheet" />
+
+
+    <link href="@Url.Content("~/Content/bootstrap-datepicker/css/bootstrap-datepicker.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap-datepicker/css/bootstrap-datepicker3.css")" rel="stylesheet" />
+
+    @* pdf <link href="//cdn.datatables.net/buttons/1.5.6/css/buttons.bootstrap4.min.css" rel="stylesheet">
+    *@
+
+    @*<link href="@Url.Content("~/Content/adminLte/plugins1/datatables/datatables.min.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/adminLte/plugins1/datatables/plugins/bootstrap/datatables.bootstrap.css")" rel="stylesheet" />
+    *@
+}
+
+
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+
+
+
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Nota Venta</h3>
+
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row justify-content-end">
+
+                          
+                            <div class="form-group">
+                                <a href="@Url.Action("NotaVenta", "NotaVenta")" class="btn btn-info"> <i class=" fas fa-plus-square"></i> </a>
+
+                            </div>
+
+
+                        </div>
+
+                        <br />
+
+                        <div class="form-group" id="contenedorLista">
+                            @Html.Partial("ListaNotaVenta", Model)
+                        </div>
+
+
+
+
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+
+                    </div>
+                    <!-- /.card-footer-->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<div class="modal fade" id="modalEmpresa">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="tituloEmpresa"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form role="form">
+
+
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-md-12 form-group alert alert-danger" id="mensajeModal" style="display:none">
+
+                        </div>
+
+                        <input type="text" class="form-control" id="itIdGestion" hidden>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" id="itNombre" placeholder="" maxlength="100">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group form-md-line-input form-md-floating-label" data-date-format="dd/mm/yyyy" style="padding-top: 0px;">
+                                <label class="control-label">Fecha Inicio:</label>
+                                <input type="text" id="inicio" class="form-control-inline date-picker form-control" value="@DateTime.Now.ToString("dd/MM/yyyy")" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-md-line-input form-md-floating-label" data-date-format="dd/mm/yyyy" style="padding-top: 0px;">
+                                <label class="control-label">Fecha Fin:</label>
+                                <input type="text" id="fin" class="form-control-inline date-picker form-control" value="@DateTime.Now.ToString("dd/MM/yyyy")" />
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+
+
+                </div>
+            </form>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary" onclick="RegistroGestion()">Guardar Cambios</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+
+
+
+
+
+
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+<div class="modal fade" id="modalEliminar">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirmacion</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control" id="inputIdGestion" hidden>
+                <p id="texto"></p>
+            </div>
+            <div class="modal-footer ">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="Eliminar()">Aceptar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+@section Scripts{
+
+
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables/jquery.dataTables.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js")"></script>
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/js/dataTables.responsive.min.js")"></script>
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/bootstrap-datepicker/js/bootstrap-datepicker.min.js")"></script>
+
+    @* Buttons pdf <script src="//cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.bootstrap4.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.colVis.min.js"></script>*@
+
+
+    @*<script src="@Url.Content("~/Scripts/metronic/global/scripts/datatable.js")"></script>
+
+        <script src="@Url.Content("~/Content/adminLte/plugins1/datatables/datatables.min.js")"></script>
+        <script src="@Url.Content("~/Content/adminLte/plugins1/datatables/plugins/bootstrap/datatables.bootstrap.js")"></script>
+    *@
+    <script type="text/javascript">
+
+
+
+        var TableDatatablesRowreorder = function () {
+
+            var initTable1 = function () {
+                var table = $('#tabla_gestion');
+
+                var oTable = table.dataTable({
+
+                    // Internationalisation. For more info refer to http://datatables.net/manual/i18n
+                    "language": {
+                        "aria": {
+                            "sortAscending": ": activate to sort column ascending",
+                            "sortDescending": ": activate to sort column descending"
+                        },
+                        "emptyTable": "No hay datos para mostrar",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Gestion",
+                        "infoEmpty": "No hay datos para mostrar",
+                        "infoFiltered": "(Filtrado de _MAX_ total Gestion)",
+                        "lengthMenu": "_MENU_ Gestion",
+                        "search": "Buscar:",
+                        "zeroRecords": "No se encontraron coincidencias",
+                       
+                    },
+
+                    // Or you can use remote translation file
+                    //"language": {
+                    //   url: '//cdn.datatables.net/plug-ins/3cfcc339e89/i18n/Portuguese.json'
+                    //},
+
+                    // setup buttons extentension: http://datatables.net/extensions/buttons/
+                    /* buttons: [
+                         //{ extend: 'print', className: 'btn dark btn-outline', exportOptions: { columns: [0, 1, 2, 3] } },
+                         { extend: 'copy', className: 'btn purple btn-outline ', exportOptions: { columns: [0, 1, 2, 3] } },
+                         { extend: 'pdf', className: 'btn green btn-outline', exportOptions: { columns: [0, 1, 2, 3] } },
+                         { extend: 'csv', className: 'btn purple btn-outline ', exportOptions: { columns: [0, 1, 2, 3] } },
+                         { extend: 'excel', className: 'btn purple btn-outline ', exportOptions: { columns: [0, 1, 2, 3] } }
+                     ],*/
+                    columnDefs: [
+                        { orderable: false, targets: [3] }
+                    ],
+                    // setup rowreorder extension: http://datatables.net/extensions/rowreorder/
+
+                    "order": [
+                        [1, 'desc']
+                    ],
+
+                    "lengthMenu": [
+                        [5, 10, 15, 20, -1],
+                        [5, 10, 15, 20, "Todos"] // change per page values here
+                    ],
+                    // set the initial value
+                    "pageLength": 10,
+
+                    "dom": "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
+
+                    // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout
+                    // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js).
+                    // So when dropdowns used the scrollable div should be removed.
+                    //"dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r>t<'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
+                });
+            }
+
+            return {
+
+                //main function to initiate the module
+                init: function () {
+
+                    if (!$().dataTable) {
+                        return;
+                    }
+
+                    initTable1();
+                }
+
+            };
+
+        }();
+
+        $(document).ready(function () {
+            TableDatatablesRowreorder.init();
+
+            $("#inicio").datepicker();
+            $("#fin").datepicker();
+
+
+        });
+
+        function redireccionar(url) {
+            window.location = url;
+        }
+
+        function Ingresar(Id) {
+
+            $.ajax({
+                    url: "@Url.Action("IngresarGestion", "Gestion")",
+                    cache: false,
+                            type: "POST",
+                            dataType: "script",
+                            data: {
+                                id: Id
+                            }
+
+            });
+        }
+
+
+        function RegistroGestion() {
+
+            console.log($("#itIdGestion").val());
+
+            if ($("#itIdGestion").val().length === 0) {
+
+
+                $.ajax({
+                    url: "@Url.Action("Registro", "Gestion")",
+                    cache: false,
+                            type: "POST",
+                            dataType: "script",
+                            data: {
+
+                               nombre: $("#itNombre").val(),
+                               fechainicio: $("#inicio").val(),
+                               fechafin:$("#fin").val()
+
+
+
+                    }, success: function () {
+
+                    }
+                });
+
+
+
+            } else {
+
+
+                 $.ajax({
+                    url: "@Url.Action("Editar", "Gestion")",
+                    cache: false,
+                            type: "POST",
+                            dataType: "script",
+                            data: {
+                               id:  $("#itIdGestion").val(),
+                               nombre: $("#itNombre").val(),
+                               fechainicio: $("#inicio").val(),
+                               fechafin:$("#fin").val()
+
+
+                    }, success: function () {
+
+
+                    }
+                });
+
+            }
+
+        }
+
+         var Id = null;
+
+       function AbrirModalEliminar(id,nombre) {
+
+            Id = id;
+           // $("#mensaje").hide();
+                if (Id == null) {
+                       return MostrarMensaje("Debe seleccionar la gestion");
+                }
+
+            var mesjModalEliminar = "¿Esta seguro que deseas eliminar la gestion " + nombre + " ?";
+             $("#texto").html(mesjModalEliminar);
+            $("#modalEliminar").modal('show');
+
+            console.log(id)
+
+
+        }
+
+
+
+         function Eliminar() {
+
+                if ( Id== null) {
+                       return MostrarMensaje("Debe seleccionar la gestion");
+                }
+
+                $.ajax({
+                        url: "@Url.Action("Eliminar", "Gestion")",
+                        cache: false,
+                                type: "POST",
+                                dataType: "script",
+                    data: {
+                        id: Id
+                    }
+
+                });
+          }
+
+         function ValidarGestion() {
+
+
+                $.ajax({
+                        url: "@Url.Action("ValidarGestionAbierta", "Gestion")",
+                        cache: false,
+                                type: "POST",
+                                dataType: "script",
+                    data: {
+
+                    }
+
+                });
+          }
+
+
+        function AbrirModalRegistro() {
+           // $("#mensaje").hide();
+            $("#modalEmpresa").modal('show');
+            $("#tituloEmpresa").html("Registro Gestion");
+            $("#itIdGestion").val("");
+            $("#itNombre").val("");
+             $("#inicio").val("");
+            $("#fin").val("");
+        }
+
+        function AbrirModalEditar(id,nombre,fechainicio,fechafin) {
+           // $("#mensaje").hide();
+            $("#modalEmpresa").modal('show');
+            $("#tituloEmpresa").html("Modificar Gestion");
+            $("#itIdGestion").val(id);
+            $("#itNombre").val(nombre);
+            $("#inicio").val(fechainicio);
+            $("#fin").val(fechafin);
+        }
+
+        function MostrarMensaje(msj) {
+                $("#modalEliminar").modal('hide');
+
+
+                 $(document).Toasts('create', {
+                        class: ' bg-danger',
+                        title: "Alerta",
+                        autohide: true,
+                        delay: 10000,
+                        body: msj
+                    });
+        }
+
+
+         function MostrarMensajeExito(msj) {
+
+                listar();
+                var msjbody = "Se Modifico los Datos Exitosamente";
+                if ($("#itIdGestion").val().length === 0) {
+                    msjbody = "Se Registro los Datos Exitosamente";
+                }
+
+                $(document).Toasts('create', {
+                    class: 'bg-success',
+                    title: msj,
+                    autohide: true,
+                    delay: 10000,
+                    body: msjbody
+                });
+                $("#itIdGestion").val("");
+                $("#itNombre").val("");
+
+                $("#modalEmpresa").modal('hide');
+               // console.log(msj);
+        }
+
+
+        function MostrarMensajeEliminacion(msj) {
+
+                listar();
+                var msjbody = "Se elimino la gestion";
+
+
+                $(document).Toasts('create', {
+                    class: 'bg-success',
+                    title: msj,
+                    autohide: true,
+                    delay: 10000,
+                    body: msjbody
+                });
+
+                $("#modalEliminar").modal('hide');
+               // console.log(msj);
+        }
+
+        function listar()
+        {
+
+
+            $.ajax({
+                url: "@Url.Action("Listar", "Gestion")",
+                cache: false,
+                data: {
+
+                },
+                type: "GET", success: function (html) {
+                    $("#contenedorLista").html(html);
+                     TableDatatablesRowreorder.init();
+                }
+            })
+
+        }
+
+
+
+
+
+    </script>
+
+}

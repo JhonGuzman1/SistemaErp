@@ -1,0 +1,53 @@
+﻿@using Datos;
+@using Entidad.Estados;
+@model List<Nota>
+
+
+
+<table class="table table-bordered table-hover" id="tabla_gestion">
+
+    <thead>
+        <tr>
+            <th>NRO NOTA</th>
+            <th>FECHA</th>
+            <th>DESCRIPCION</th>
+            <th>ESTADO</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @{
+            foreach (var i in Model)
+            {
+                <tr>
+
+                    <td>@i.NroNota</td>
+                    <td>@i.Fecha.ToString("dd/MM/yyyy")</td>
+                    <td>@i.Descripcion</td>
+                    @{ 
+
+                        if(i.Estado == (int)EstadoNota.Activo)
+                        {
+
+
+                             <td>Activo</td>
+                        }
+                        else
+                        {
+                            <td>Anulado</td>
+                        }
+
+                    }
+                    <td>
+
+                        <a href="@Url.Action("ENotaCompra", "NotaCompra", new { idnota = i.IdNota })" class="btn btn-secondary "><i class="fas fa-eye"></i> </a>
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+
+</table>
+

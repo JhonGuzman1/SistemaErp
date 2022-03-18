@@ -1,0 +1,43 @@
+﻿@using Datos;
+@using Entidad.Estados;
+@model List<Articulo>
+
+
+
+<table class="table table-bordered table-hover" id="tabla_gestion">
+
+    <thead>
+        <tr>
+            <th>NOMBRE</th>
+            <th>DESCRIPCION</th>
+            <th>CANTIDAD</th>
+            <th>PRECIO VENTA</th>
+            <th></th>
+            <th></th>
+            <th></th>
+           
+        </tr>
+    </thead>
+    <tbody>
+
+        @{
+            foreach (var i in Model)
+            {
+                <tr>
+
+                    <td>@i.Nombre</td>
+                    <td>@i.Descripcion</td>
+                   <td>@i.Cantidad</td>
+                    <td>@i.PrecioVenta</td>
+                     <td>  @{ <button class="btn btn-secondary form-group " onclick="AbrirModalLote('@i.IdArticulo', '@i.Nombre')">Lotes </button> } </td>
+                    <td>  @{ <button class="btn btn-secondary form-group fas fa-edit" onclick="ObtenerArticulo('@i.IdArticulo')"> </button> } </td>
+                    <td> @{ <button class="btn btn-danger form-group  fas fa-trash-alt" onclick="AbrirModalEliminar('@i.IdArticulo', '@i.Nombre')"> </button>}</td>
+                
+                </tr>
+            }
+        }
+
+    </tbody>
+
+</table>
+

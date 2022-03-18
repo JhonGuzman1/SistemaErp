@@ -1,0 +1,17 @@
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Release\Logica.dll.config
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Release\Logica.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Release\Logica.pdb
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Release\Datos.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Release\Entidad.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Release\EntityFramework.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Release\Datos.pdb
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Release\Datos.dll.config
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Release\Entidad.pdb
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Release\EntityFramework.xml
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\obj\Release\Logica.csprojAssemblyReference.cache
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\obj\Release\Logica.csproj.CoreCompileInputs.cache
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\obj\Release\Logica.csproj.CopyComplete
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\obj\Release\Logica.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\obj\Release\Logica.pdb

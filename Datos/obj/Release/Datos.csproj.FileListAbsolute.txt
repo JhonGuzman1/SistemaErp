@@ -1,0 +1,12 @@
+C:\Users\Sistemas\source\repos\SistemaERP\Datos\bin\Release\Datos.dll.config
+C:\Users\Sistemas\source\repos\SistemaERP\Datos\bin\Release\Datos.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Datos\bin\Release\Datos.pdb
+C:\Users\Sistemas\source\repos\SistemaERP\Datos\bin\Release\EntityFramework.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Datos\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Datos\bin\Release\EntityFramework.xml
+C:\Users\Sistemas\source\repos\SistemaERP\Datos\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\Sistemas\source\repos\SistemaERP\Datos\obj\Release\Datos.csproj.CoreCompileInputs.cache
+C:\Users\Sistemas\source\repos\SistemaERP\Datos\obj\Release\Datos.csproj.CopyComplete
+C:\Users\Sistemas\source\repos\SistemaERP\Datos\obj\Release\Datos.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Datos\obj\Release\Datos.pdb
+C:\Users\Sistemas\source\repos\SistemaERP\Datos\obj\Release\Datos.csprojAssemblyReference.cache

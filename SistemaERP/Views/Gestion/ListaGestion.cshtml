@@ -1,0 +1,51 @@
+﻿@using Datos;
+@using Entidad.Estados;
+@model List<Gestion>
+
+
+
+<table  class="table table-bordered table-hover" id="tabla_gestion">
+
+    <thead>
+        <tr>
+            <th>NOMBRE</th>
+            <th>FECHA INICIO</th>
+            <th>FECHA FIN</th>
+            <th>ESTADO</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @{
+            foreach (var i in Model)
+            {
+                <tr>
+
+                    <td>@i.Nombre</td>
+                    <td>@i.FechaInicio.ToString("dd/MM/yyyy")</td>
+                    <td>@i.FechaFin.ToString("dd/MM/yyyy")</td>
+
+                    @{
+                        if (i.Estado == (int)EstadoGestion.Abierto)
+                        {
+                            <td>Abierto</td>
+                        }
+                        else if (i.Estado == (int)EstadoGestion.Cerrado)
+                        {
+                            <td>Cerrado</td>
+                        }
+
+                    }                                       
+                    <td>  @{ <button class="btn btn-secondary form-group fas fa-edit" onclick="AbrirModalEditar('@i.IdGestion','@i.Nombre','@i.FechaInicio.ToString("dd/MM/yyyy")','@i.FechaFin.ToString("dd/MM/yyyy")')"> </button> } </td>
+                    <td> @{ <button class="btn btn-danger form-group  fas fa-trash-alt" onclick="AbrirModalEliminar('@i.IdGestion','@i.Nombre')"> </button>}</td>
+                    <td>  @{ <button class="btn btn-success form-group  fas fa-calendar" onclick="Ingresar('@i.IdGestion')"> </button>}</td>
+                </tr>
+            }
+        }
+
+    </tbody>
+
+</table>

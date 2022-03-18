@@ -1,0 +1,721 @@
+﻿
+
+@{
+    ViewBag.Title = "Cuenta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section EtiquetaHead
+    {
+
+
+
+    @*    <link href="@Url.Content("~/Content/adminLte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css")" rel="stylesheet" />
+
+
+        <link href="@Url.Content("~/Content/bootstrap-datepicker/css/bootstrap-datepicker.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/bootstrap-datepicker/css/bootstrap-datepicker3.css")" rel="stylesheet" />
+    *@
+
+
+    <link href="@Url.Content("~/Content/arbol/css/gijgo.min.css")" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+    @* pdf <link href="//cdn.datatables.net/buttons/1.5.6/css/buttons.bootstrap4.min.css" rel="stylesheet">
+    *@
+
+    @*<link href="@Url.Content("~/Content/adminLte/plugins1/datatables/datatables.min.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/adminLte/plugins1/datatables/plugins/bootstrap/datatables.bootstrap.css")" rel="stylesheet" />
+    *@
+}
+
+
+
+<br>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Cuenta</h3>
+
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row justify-content-end">
+
+                            <div class="form-group">
+                                <a href="@Url.Action("ReporteCuenta", "Cuenta")" class="btn btn-primary" style="margin-right:10px;"> <i class=" fas fa-print"></i>  </a>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <button class="btn btn-danger form-group  fas fa-trash-alt" style="margin-right:10px;" onclick="ModalEliminarCuenta()"> </button>
+                            </div>
+
+
+                            <div class="form-group">
+                                <button class="btn btn-secondary form-group fas fa-edit" style="margin-right:10px;" onclick="ObtenerCuenta()"> </button>
+                            </div>
+
+
+                            <div class="form-group">
+                                <button class="btn btn-info" onclick="AbrirModalRegistro()"> <i class=" fas fa-plus-square"></i> Registrar Cuenta </button>
+                            </div>
+
+                        </div>
+
+                        <br />
+
+                        <div style="width:700px; height:400px; overflow: scroll;">
+                            <div id="tree">
+
+                            </div>
+                        </div>
+
+                     
+
+
+
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+
+                    </div>
+                    <!-- /.card-footer-->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<div class="modal fade" id="modalEmpresa">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="tituloEmpresa"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form role="form">
+
+
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-md-12 form-group alert alert-danger" id="mensajeModal" style="display:none">
+
+                        </div>
+
+                        <input type="text" class="form-control" id="itIdGestion" hidden>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" id="itNombre" placeholder="" maxlength="100">
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+
+                </div>
+            </form>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary" onclick="RegistroCuenta()">Guardar Cambios</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+
+
+
+
+
+
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+
+
+<div class="modal fade" id="modalEditar">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="tituloeditar"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form role="form">
+
+
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-md-12 form-group alert alert-danger" id="mensajeModal" style="display:none">
+
+                        </div>
+
+                        <input type="text" class="form-control" id="itIdGestion" hidden>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" id="itNombreEditar" placeholder="" maxlength="100">
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+
+                </div>
+            </form>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary" onclick="EditarCuenta()">Guardar Cambios</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+
+
+
+
+
+
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+<div class="modal fade" id="modalEliminar">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirmacion</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control" id="inputIdGestion" hidden>
+                <p id="texto"></p>
+            </div>
+            <div class="modal-footer ">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="EliminarCuenta()">Aceptar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+@section Scripts{
+
+  
+
+    <script src="@Url.Content("~/Content/arbol/js/gijgo.min.js")"></script>
+    @*  <script src="@Url.Content("~/Content/adminLte/plugins/datatables/jquery.dataTables.min.js")"></script>
+
+        <script src="@Url.Content("~/Content/adminLte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js")"></script>
+        <script src="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/js/dataTables.responsive.min.js")"></script>
+        <script src="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js")"></script>
+
+
+
+        <script src="@Url.Content("~/Content/bootstrap-datepicker/js/bootstrap-datepicker.min.js")"></script>
+    *@
+
+
+
+    @* Buttons pdf <script src="//cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.bootstrap4.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.colVis.min.js"></script>*@
+
+
+    @*<script src="@Url.Content("~/Scripts/metronic/global/scripts/datatable.js")"></script>
+
+        <script src="@Url.Content("~/Content/adminLte/plugins1/datatables/datatables.min.js")"></script>
+        <script src="@Url.Content("~/Content/adminLte/plugins1/datatables/plugins/bootstrap/datatables.bootstrap.js")"></script>
+    *@
+    <script type="text/javascript">
+
+        let tree;
+
+
+         $(document).ready(function () {
+
+             listarCuenta();
+           // TableDatatablesRowreorder.init();
+
+         //  $("#inicio").datepicker();
+          //  $("#fin").datepicker();
+             
+
+        });
+
+            let idCuenta=0;
+        let idPadre = 1;
+    let NombreCuenta = "";
+
+         function listarCuenta() {
+
+            console.log("ass");
+          //  let List = [];
+          //  let prueba = [{ id: 5, text: "prueba" }, { id: 6, text: "prueba" }];
+
+            $.ajax({
+                url: "@Url.Action("ListarCuenta", "Cuenta")",
+                cache: false,
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+
+
+                }, success: function (result) {
+                            console.log(result.Cuentas);
+                                tree = $('#tree').tree({
+                                        primaryKey: 'id',
+                                        dataSource: result.Cuentas,
+                                        uiLibrary: 'bootstrap4',
+                                        select: function (e, node, id) {
+                                            // alert('id' + id);
+                                            idCuenta = id;
+                                            idPadre = 0;
+                                           
+                                        },
+                                        cascadeSelection: false,
+                               });
+                           tree.expandAll()
+                                 tree.on('dataBound', function () {
+                                        var node = tree.getNodeByText('North America');
+                                        tree.expand(node);
+                                 });
+                                tree.on('unselect', function (e, node, id) {
+                                    idCuenta = 0;
+                                    idPadre = 1;
+                                         //alert('unselect is fired for node with id=' + id);
+                                });
+
+                            /*List = result.Cuentas;
+                            console.log(List);
+                            console.log(prueba);*/
+                            //$("#itIdEmpresa").val(result.idEmpresa);
+
+                }
+
+            });
+
+          /*  console.log("prueba");
+             var tree = $('#tree').tree({
+                    primaryKey: 'id',
+                    dataSource: prueba
+              });
+             tree.on('dataBound', function () {
+                    var node = tree.getNodeByText('North America');
+                    tree.expand(node);
+             });*/
+
+
+        }
+
+
+        function redireccionar(url) {
+            window.location = url;
+        }
+
+        function Ingresar(Id) {
+
+            $.ajax({
+                    url: "@Url.Action("IngresarGestion", "Gestion")",
+                    cache: false,
+                            type: "POST",
+                            dataType: "script",
+                            data: {
+                                id: Id
+                            }
+
+            });
+        }
+
+
+        function RegistroCuenta() {
+
+
+                $.ajax({
+                    url: "@Url.Action("Registro", "Cuenta")",
+                    cache: false,
+                            type: "POST",
+                            dataType: "script",
+                            data: {
+
+                                nombre: $("#itNombre").val(),
+                                idCuenta: idCuenta,
+                                idPadre: idPadre
+
+
+
+                    }, success: function () {
+
+                    }
+                });
+
+        }
+
+
+        function ObtenerCuenta() {
+
+                if (idCuenta == 0) {
+                       return MostrarMensaje("Debe seleccionar una cuenta");
+                }
+
+                $.ajax({
+                    url: "@Url.Action("ObtenerCuenta", "Cuenta")",
+                    cache: false,
+                            type: "POST",
+                            dataType: "json",
+                    data: {
+                        idcuenta: idCuenta
+
+                    }, success: function (result) {
+
+
+                                console.log(result);
+                    
+                        $("#tituloeditar").html("Editar Cuenta");
+                          $("#itNombreEditar").val(result.Nombre);
+                        $("#modalEditar").modal('show');
+                           
+                    }
+
+                 });
+        }
+
+
+    function ModalEliminarCuenta() {
+
+                if (idCuenta == 0) {
+                       return MostrarMensaje("Debe seleccionar una cuenta");
+                }
+
+                $.ajax({
+                    url: "@Url.Action("ObtenerCuenta", "Cuenta")",
+                    cache: false,
+                            type: "POST",
+                            dataType: "json",
+                    data: {
+                        idcuenta: idCuenta
+
+                    }, success: function (result) {
+
+
+                                console.log(result);
+                    
+                       var mesjModalEliminar = "¿Esta seguro que deseas eliminar la cuenta" + result.Nombre + " ?";
+             $("#texto").html(mesjModalEliminar);
+            $("#modalEliminar").modal('show');
+                           
+                    }
+
+                 });
+        }
+
+        function EditarCuenta() {
+
+
+                if (idCuenta == 0) {
+                       return MostrarMensaje("Debe seleccionar una cuenta");
+                }
+
+                $.ajax({
+                    url: "@Url.Action("Editar", "Cuenta")",
+                    cache: false,
+                            type: "POST",
+                            dataType: "script",
+                            data: {
+                                idCuenta: idCuenta,
+                                nombre:  $("#itNombreEditar").val()
+                                
+
+                                
+
+
+
+                    }, success: function () {
+
+                    }
+                });
+
+        }
+
+
+         function EliminarCuenta() {
+
+
+                if (idCuenta == 0) {
+                       return MostrarMensaje("Debe seleccionar una cuenta");
+                }
+
+                $.ajax({
+                    url: "@Url.Action("Eliminar", "Cuenta")",
+                    cache: false,
+                            type: "POST",
+                            dataType: "script",
+                            data: {
+                                idCuenta: idCuenta
+
+
+                    }, success: function () {
+
+                    }
+                });
+
+        }
+
+    /*  
+    function AbrirModalEditar() {
+          
+                if (idCuenta === 0) {
+                       return MostrarMensaje("Debe seleccionar una cuenta");
+                }
+           // $("#mensaje").hide();
+           console.log(NombreCuenta);
+        $("#tituloeditar").html("Editar Cuenta");
+          $("#itNombreEditar").val(NombreCuenta);
+        $("#modalEditar").modal('show');
+           
+        // $("#itIdGestion").val("");
+     
+          
+            // $("#inicio").val("");
+            //$("#fin").val("");
+        }*/
+
+         var Id = null;
+
+       function AbrirModalEliminar(id,nombre) {
+
+            Id = id;
+           // $("#mensaje").hide();
+                if (Id == null) {
+                       return MostrarMensaje("Debe seleccionar la gestion");
+                }
+
+            var mesjModalEliminar = "¿Esta seguro que deseas eliminar la gestion " + nombre + " ?";
+             $("#texto").html(mesjModalEliminar);
+            $("#modalEliminar").modal('show');
+
+            console.log(id)
+
+
+        }
+        
+
+
+
+         function Eliminar() {
+
+                if ( Id== null) {
+                       return MostrarMensaje("Debe seleccionar la gestion");
+                }
+
+                $.ajax({
+                        url: "@Url.Action("Eliminar", "Gestion")",
+                        cache: false,
+                                type: "POST",
+                                dataType: "script",
+                    data: {
+                        id: Id
+                    }
+
+                });
+          }
+
+         function ValidarGestion() {
+
+
+                $.ajax({
+                        url: "@Url.Action("ValidarGestionAbierta", "Gestion")",
+                        cache: false,
+                                type: "POST",
+                                dataType: "script",
+                    data: {
+
+                    }
+
+                });
+          }
+
+
+        function AbrirModalRegistro() {
+           // $("#mensaje").hide();
+            $("#modalEmpresa").modal('show');
+            $("#tituloEmpresa").html("Registro Cuenta");
+           // $("#itIdGestion").val("");
+            $("#itNombre").val("");
+            // $("#inicio").val("");
+            //$("#fin").val("");
+        }
+
+      
+
+
+        /*function AbrirModalEditar(id,nombre,fechainicio,fechafin) {
+           $("#mensaje").hide();
+            $("#modalEmpresa").modal('show');
+            $("#tituloEmpresa").html("Modificar Gestion");
+            $("#itIdGestion").val(id);
+            $("#itNombre").val(nombre);
+            $("#inicio").val(fechainicio);
+            $("#fin").val(fechafin);
+        }*/
+
+        function MostrarMensaje(msj) {
+                $("#modalEliminar").modal('hide');
+
+
+                 $(document).Toasts('create', {
+                        class: ' bg-danger',
+                        title: "Alerta",
+                        autohide: true,
+                        delay: 10000,
+                        body: msj
+                    });
+        }
+
+
+         function MostrarMensajeExito(msj) {
+
+            
+                tree.destroy()
+               listarCuenta();
+              /*  var msjbody = "Se Modifico los Datos Exitosamente";
+                if ($("#itIdGestion").val().length === 0) {
+                    msjbody = "Se Registro los Datos Exitosamente";
+                }*/
+            var  msjbody = "Se Registro los Datos Exitosamente";
+                $(document).Toasts('create', {
+                    class: 'bg-success',
+                    title: msj,
+                    autohide: true,
+                    delay: 10000,
+                    body: msjbody
+                });
+                //$("#itIdGestion").val("");
+                $("#itNombre").val("");
+
+                $("#modalEmpresa").modal('hide');
+               // console.log(msj);
+        }
+
+
+         function MostrarMensajeExitoEditar(msj) {
+
+            
+                tree.destroy()
+               listarCuenta();
+              /*  var msjbody = "Se Modifico los Datos Exitosamente";
+                if ($("#itIdGestion").val().length === 0) {
+                    msjbody = "Se Registro los Datos Exitosamente";
+                }*/
+            var  msjbody = "Se Modifico los Datos Exitosamente";
+                $(document).Toasts('create', {
+                    class: 'bg-success',
+                    title: msj,
+                    autohide: true,
+                    delay: 10000,
+                    body: msjbody
+                });
+                //$("#itIdGestion").val("");
+                $("#itNombreEditar").val("");
+
+                $("#modalEditar").modal('hide');
+               // console.log(msj);
+        }
+
+
+        function MostrarMensajeEliminacion(msj) {
+
+                
+                tree.destroy()
+               listarCuenta();
+                var msjbody = "Se elimino la gestion";
+
+
+                $(document).Toasts('create', {
+                    class: 'bg-success',
+                    title: msj,
+                    autohide: true,
+                    delay: 10000,
+                    body: msjbody
+                });
+
+                $("#modalEliminar").modal('hide');
+               // console.log(msj);
+        }
+
+        function listar()
+        {
+
+
+            $.ajax({
+                url: "@Url.Action("Listar", "Gestion")",
+                cache: false,
+                data: {
+
+                },
+                type: "GET", success: function (html) {
+                    $("#contenedorLista").html(html);
+                     TableDatatablesRowreorder.init();
+                }
+            })
+
+        }
+
+
+
+
+
+    </script>
+
+}

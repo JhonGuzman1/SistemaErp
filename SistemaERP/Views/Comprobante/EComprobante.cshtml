@@ -1,0 +1,1104 @@
+﻿@using Datos;
+@using Entidad;
+@using Entidad.Estados;
+@model Comprobante
+@{
+    ViewBag.Title = "Comprobante";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Cuenta> cuentasDetalle = ViewBag.CuentaDetalle;
+    List<EmpresaMoneda> empresaMonedas = ViewBag.EmpresaMonedas;
+
+    EmpresaMoneda emoneda = empresaMonedas.First();
+
+   // long Serie = ViewBag.Serie;
+
+}
+@section EtiquetaHead
+    {
+
+
+
+    <link href="@Url.Content("~/Content/adminLte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css")" rel="stylesheet" />
+
+
+    <link href="@Url.Content("~/Content/bootstrap-datepicker/css/bootstrap-datepicker.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap-datepicker/css/bootstrap-datepicker3.css")" rel="stylesheet" />
+
+    @* pdf <link href="//cdn.datatables.net/buttons/1.5.6/css/buttons.bootstrap4.min.css" rel="stylesheet">
+    *@
+
+    @*<link href="@Url.Content("~/Content/adminLte/plugins1/datatables/datatables.min.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/adminLte/plugins1/datatables/plugins/bootstrap/datatables.bootstrap.css")" rel="stylesheet" />
+    *@
+}
+
+<br/>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"> Comprobante</h3>
+
+                    </div>
+
+                    @{
+
+                        if (Model.Estado == (int)EstadoComprobante.Abierto)
+                        {
+                            <!--SI MODIFICA-->
+
+                            <div class="card-body">
+
+                                <div class="row justify-content-end">
+
+                                    <div class="form-group">
+                                          <button class="btn btn-danger form-group  fas fa-trash-alt" data-toggle="modal" data-target="#modalAnularComprobante" style="margin-right:10px;"> </button>
+                                    </div>
+                                    <div class="form-group">
+                                        <a href="@Url.Action("ReporteComprobante", "Comprobante", new { idcomprobante = Model.IdComprobante })" class="btn btn-primary" style="margin-right:10px;"> <i class=" fas fa-print"></i>  </a>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <a href="@Url.Action("Index", "Comprobante")" class="btn btn-secondary" style="margin-right:10px;"> <i class=" fas fa-undo-alt"></i>  </a>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary" onclick="ModificarComprobante()">Guardar </button>
+                                    </div>
+
+
+
+                                </div>
+
+
+
+                                <div class="row">
+
+                                   
+                                       
+                                    <input type="text" class="form-control" id="itIdComprobante" placeholder="" maxlength="100" value="@Model.IdComprobante" disabled hidden>
+                                        
+                                    
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Serie</label>
+                                            <input type="text" class="form-control" id="itSerie" placeholder="" maxlength="100" value="@Model.Serie" disabled>
+                                        </div>
+                                    </div>
+
+                                    @{
+
+                                        switch (Model.Estado)
+                                        {
+                                            case (int)EstadoComprobante.Abierto:
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Estado</label>
+                                                        <input type="text" class="form-control" id="itEstado" placeholder="Abierto" maxlength="100" disabled>
+                                                    </div>
+                                                </div>
+
+
+                                                break;
+                                            case (int)EstadoComprobante.Anualdo:
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Estado</label>
+                                                        <input type="text" class="form-control" id="itEstado" placeholder="Anulado" maxlength="100" disabled>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                break;
+                                            case (int)EstadoComprobante.Cerrado:
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Estado</label>
+                                                        <input type="text" class="form-control" id="itEstado" placeholder="Cerrado" maxlength="100" disabled>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                break;
+
+
+                                        }
+
+
+                                    }
+
+
+                                    <div class="col-md-4">
+                                        <div class="form-group form-md-line-input form-md-floating-label" data-date-format="dd/mm/yyyy" style="padding-top: 0px;">
+                                            <label class="control-label">Fecha </label>
+                                            <input type="text" id="itFecha" class="form-control-inline date-picker form-control" value="@Model.Fecha.ToString("dd/MM/yyyy")" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Tipo Comprobante</label>
+                                            <select class="form-control select2" style="width: 100%;" id="select_TipoComprobante">
+
+                                                <!--  <option value="1">Ingreso</option>
+                  <option value="2">Egreso</option>
+                  <option value="3">Traspaso</option>
+                  <option value="4">Apertura</option>-->
+                                                @{
+                                                    foreach (TipoComprobante i in Enum.GetValues(typeof(TipoComprobante)))
+                                                    {
+                                                        if ((int)i == Model.TipoComprobante)
+                                                        {
+                                                            <option value="@((int)i)" selected>@i.ToString() </option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@((int)i)">@i.ToString() </option>
+                                                        }
+
+
+                                                    }
+                                                }
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Tipo Cambio</label>
+                                            <input type="text" class="form-control" id="itTipoCambio" value="@Model.TipoCambio">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Moneda</label>
+                                            <select class="form-control select2" style="width: 100%;" id="select_Moneda">
+
+                                                @{
+                                                    foreach (var i in empresaMonedas)
+                                                    {
+
+
+                                                        if (i.IdMonedaPrincipal == Model.IdMoneda)
+                                                        {
+                                                            <option value="@i.IdMonedaPrincipal" selected>@i.Moneda.Abreviatura</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@i.IdMonedaPrincipal">@i.Moneda.Abreviatura</option>
+                                                        }
+
+
+                                                        if (i.IdMonedaAlternativa != null)
+                                                        {
+                                                            if (i.IdMonedaAlternativa == Model.IdMoneda)
+                                                            {
+                                                                <option value="@i.IdMonedaAlternativa" selected>@i.Moneda1.Abreviatura</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@i.IdMonedaAlternativa">@i.Moneda1.Abreviatura</option>
+                                                            }
+
+                                                        }
+
+
+                                                    }
+                                                }
+
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Glosa</label>
+                                            <input type="text" class="form-control" id="itGlosa" placeholder="" maxlength="100" value="@Model.Glosa">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="row justify-content-end">
+
+                                    <div class="form-group">
+                                        <button class="btn btn-info" onclick="AbrirModalRegistro()"> <i class=" fas fa-plus-square"></i>  </button>
+                                    </div>
+
+                                </div>
+                                <div class="form-group" id="contenedorLista">
+                                    @Html.Partial("ListaDetalleComprobante", new List<EDetalleComprobante>())
+                                </div>
+
+
+
+
+                            </div>
+
+
+
+                            <!-- /.card-body -->
+
+                        }
+                        else
+                        {
+                            <!--NO SE PUEDE MODIFICAR-->
+
+
+
+
+
+
+                            <div class="card-body">
+
+                                <div class="row justify-content-end">
+
+                                    <div class="form-group">
+                                        <a href="@Url.Action("ReporteComprobante", "Comprobante", new { idcomprobante = Model.IdComprobante })" class="btn btn-primary" style="margin-right:10px;"> <i class=" fas fa-print"></i>  </a>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <a href="@Url.Action("Index", "Comprobante")" class="btn btn-secondary" style="margin-right:10px;"> <i class=" fas fa-undo-alt"></i>  </a>
+                                    </div>
+
+                                    <!--<div class="form-group">
+                                        <button type="submit" class="btn btn-primary" onclick="RegistroComrpobante()">Guardar </button>
+                                    </div>-->
+
+
+
+                                </div>
+
+
+
+                                <div class="row">
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Serie</label>
+                                            <input type="text" class="form-control" id="itSerie" placeholder="" maxlength="100" value="@Model.Serie" disabled>
+                                        </div>
+                                    </div>
+
+                                    @{
+
+                                        switch (Model.Estado)
+                                        {
+                                            case (int)EstadoComprobante.Abierto:
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Estado</label>
+                                                        <input type="text" class="form-control" id="itEstado" placeholder="Abierto" maxlength="100" disabled>
+                                                    </div>
+                                                </div>
+
+
+                                                break;
+                                            case (int)EstadoComprobante.Anualdo:
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Estado</label>
+                                                        <input type="text" class="form-control" id="itEstado" placeholder="Anulado" maxlength="100" disabled>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                break;
+                                            case (int)EstadoComprobante.Cerrado:
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Estado</label>
+                                                        <input type="text" class="form-control" id="itEstado" placeholder="Cerrado" maxlength="100" disabled>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                break;
+
+
+                                        }
+
+
+                                    }
+
+
+                                    <div class="col-md-4">
+                                        <div class="form-group form-md-line-input form-md-floating-label" data-date-format="dd/mm/yyyy" style="padding-top: 0px;">
+                                            <label class="control-label">Fecha </label>
+                                            <input type="text" id="itFecha" class="form-control-inline date-picker form-control" value="@Model.Fecha.ToString("dd/MM/yyyy")" disabled />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Tipo Comprobante</label>
+                                            <select class="form-control select2" style="width: 100%;" id="select_TipoComprobante" disabled>
+
+                                                <option value="1">Ingreso</option>
+                                                <option value="2">Egreso</option>
+                                                <option value="3">Traspaso</option>
+                                                <option value="4">Apertura</option>
+                                                @{
+                                                    foreach (TipoComprobante i in Enum.GetValues(typeof(TipoComprobante)))
+                                                    {
+                                                        if ((int)i == Model.TipoComprobante)
+                                                        {
+                                                            <option value="@((int)i)" selected>@i.ToString() </option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@((int)i)">@i.ToString() </option>
+                                                        }
+
+
+                                                    }
+                                                }
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Tipo Cambio</label>
+                                            <input type="text" class="form-control" id="itTipoCambio" value="@Model.TipoCambio" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Moneda</label>
+                                            <select class="form-control select2" style="width: 100%;" id="select_Moneda" disabled>
+
+                                                @{
+                                                    foreach (var i in empresaMonedas)
+                                                    {
+
+
+                                                        if (i.IdMonedaPrincipal == Model.IdMoneda)
+                                                        {
+                                                            <option value="@i.IdMonedaPrincipal" selected>@i.Moneda.Abreviatura</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@i.IdMonedaPrincipal">@i.Moneda.Abreviatura</option>
+                                                        }
+
+
+                                                        if (i.IdMonedaAlternativa != null)
+                                                        {
+                                                            if (i.IdMonedaAlternativa == Model.IdMoneda)
+                                                            {
+                                                                <option value="@i.IdMonedaAlternativa" selected>@i.Moneda1.Abreviatura</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@i.IdMonedaAlternativa">@i.Moneda1.Abreviatura</option>
+                                                            }
+
+                                                        }
+
+
+                                                    }
+                                                }
+
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Glosa</label>
+                                            <input type="text" class="form-control" id="itGlosa" placeholder="" maxlength="100" value="@Model.Glosa" disabled>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="row justify-content-end">
+
+                                    <!--<div class="form-group">
+                                        <button class="btn btn-info" onclick="AbrirModalRegistro()"> <i class=" fas fa-plus-square"></i>  </button>
+                                    </div>-->
+
+                                </div>
+                                <div class="form-group" id="contenedorLista">
+                                    @Html.Partial("ListaDetalleComprobante", new List<EDetalleComprobante>())
+                                </div>
+
+
+
+
+                            </div>
+
+
+
+
+
+                            <!-- /.card-body -->
+
+
+
+
+
+                        }
+
+
+
+                    }
+
+
+                    <div class="card-footer">
+
+                    </div>
+                    <!-- /.card-footer-->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<div class="modal fade" id="modalEmpresa" >
+    <div class="modal-dialog modal-dialog-centered modal modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+               <h4 class="modal-title" id="tituloEmpresa"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form role="form">
+
+
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <!--<div class="col-md-12 form-group alert alert-danger" id="mensajeModal" style="display:none">
+
+                        </div>-->
+
+                        <input type="text" class="form-control" id="itIdcuenta" hidden>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Cuenta</label>
+                                <select class="form-control select2" style="width: 100%;" id="select_Cuenta">
+
+                                    <option value="-1">Seleccionar Cuenta</option>
+                                    @{ 
+                                        foreach(var i in cuentasDetalle)
+                                        {
+                                            <option value="@i.idCuenta" >@i.Codigo-@i.Nombre </option>
+                                        }
+                                    }
+
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Glosa</label>
+                                <input type="text" class="form-control" id="itDetalleGlosa" placeholder="" maxlength="100">
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Debe</label>
+                                <input type="text" class="form-control" id="itDebe">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Haber</label>
+                                <input type="text" class="form-control" id="itHaber">
+                            </div>
+                        </div>
+
+                       
+
+                    </div>
+
+
+                </div>
+            </form>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary" onclick="RegistroDetalleComprobante()">Guardar </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+
+
+
+
+
+
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+
+
+<div class="modal fade" id="modalEliminar">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirmacion</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control" id="inputIdGestion" hidden>
+                <p id="texto"></p>
+            </div>
+            <div class="modal-footer ">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="Eliminar()">Aceptar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modalAnularComprobante">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirmacion</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            
+                <p>¿Esta seguro que deseas anular el comprobante ? </p>
+            </div>
+            <div class="modal-footer ">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="AnularComprobante()">Aceptar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+@section Scripts{
+
+
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables/jquery.dataTables.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js")"></script>
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/js/dataTables.responsive.min.js")"></script>
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/bootstrap-datepicker/js/bootstrap-datepicker.min.js")"></script>
+
+    @* Buttons pdf <script src="//cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.bootstrap4.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.colVis.min.js"></script>*@
+
+
+    @*<script src="@Url.Content("~/Scripts/metronic/global/scripts/datatable.js")"></script>
+
+        <script src="@Url.Content("~/Content/adminLte/plugins1/datatables/datatables.min.js")"></script>
+        <script src="@Url.Content("~/Content/adminLte/plugins1/datatables/plugins/bootstrap/datatables.bootstrap.js")"></script>
+    *@
+<script type="text/javascript">
+
+
+
+        var TableDatatablesRowreorder = function () {
+
+                                                var initTable1 = function () {
+                                                    var table = $('#tabla_detalleComprobante');
+
+                                                    var oTable = table.dataTable({
+
+                                                        // Internationalisation. For more info refer to http://datatables.net/manual/i18n
+                                                        "language": {
+                                                            "aria": {
+                                                                "sortAscending": ": activate to sort column ascending",
+                            "sortDescending": ": activate to sort column descending"
+                                                            },
+                        "emptyTable": "No hay datos para mostrar",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Gestion",
+                        "infoEmpty": "No hay datos para mostrar",
+                        "infoFiltered": "(Filtrado de _MAX_ total Gestion)",
+                        "lengthMenu": "_MENU_ Gestion",
+                        "search": "Buscar:",
+                        "zeroRecords": "No se encontraron coincidencias",
+
+                    },
+
+                    "order": [],
+                    "columnDefs": [ {
+                      "targets"  : 'no-sort',
+                      "orderable": false,
+                    }],
+
+                    // Or you can use remote translation file
+                    //"language": {
+                    //   url: '//cdn.datatables.net/plug-ins/3cfcc339e89/i18n/Portuguese.json'
+                    //},
+
+                    // setup buttons extentension: http://datatables.net/extensions/buttons/
+                    /* buttons: [
+                         //{ extend: 'print', className: 'btn dark btn-outline', exportOptions: { columns: [0, 1, 2, 3] } },
+                         { extend: 'copy', className: 'btn purple btn-outline ', exportOptions: { columns: [0, 1, 2, 3] } },
+                         { extend: 'pdf', className: 'btn green btn-outline', exportOptions: { columns: [0, 1, 2, 3] } },
+                         { extend: 'csv', className: 'btn purple btn-outline ', exportOptions: { columns: [0, 1, 2, 3] } },
+                         { extend: 'excel', className: 'btn purple btn-outline ', exportOptions: { columns: [0, 1, 2, 3] } }
+                     ],*/
+                   /* columnDefs: [
+                        { orderable: false, targets: [3] }
+                    ],*/
+                    // setup rowreorder extension: http://datatables.net/extensions/rowreorder/
+
+                  /*  "order": [
+                        [0, 'asc']
+                    ],*/
+
+                    "lengthMenu": [
+                        [5, 10, 15, 20, -1],
+                        [5, 10, 15, 20, "Todos"] // change per page values here
+                    ],
+                    // set the initial value
+                    "pageLength": 10,
+
+                    "dom": "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
+
+                    // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout
+                    // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js).
+                    // So when dropdowns used the scrollable div should be removed.
+                    //"dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r>t<'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
+                });
+            }
+
+            return {
+
+                //main function to initiate the module
+                init: function () {
+
+                    if (!$().dataTable) {
+                        return;
+                    }
+
+                    initTable1();
+                }
+
+            };
+
+        }();
+
+        $(document).ready(function () {
+           // TableDatatablesRowreorder.init();
+
+
+             listar();
+            $("#itFecha").datepicker();
+            $("#select_TipoComprobante").select2();
+            $("#select_Cuenta").select2();
+            $("#select_Moneda").select2();
+
+            $("#itDebe").change(function () {
+
+
+                $("#itHaber").prop('disabled', true);
+                $("#itHaber").val("0");
+
+            });
+            $("#itHaber").change(function () {
+
+
+                  $("#itDebe").prop('disabled', true);
+		          $("#itDebe").val("0");
+            });
+
+
+        });
+
+        var DetalleGlosa = "";
+        function redireccionar(url) {
+            window.location = url;
+        }
+
+        function Ingresar(Id) {
+
+            $.ajax({
+                    url: "@Url.Action("IngresarGestion", "Gestion")",
+                    cache: false,
+                            type: "POST",
+                            dataType: "script",
+                            data: {
+                                id: Id
+                            }
+
+            });
+        }
+
+    function RegistroDetalleComprobante() {
+
+            var idCuenta = $("#select_Cuenta").val();
+            if (idCuenta === -1) {
+                  return MostrarMensaje("Debe seleccionar una cuenta");
+            }
+
+            let Debe = $("#itDebe").val();
+            let Haber = $("#itHaber").val();
+            let CuentaId = $("#itIdcuenta").val();
+            if (CuentaId == 0) {
+
+                $.ajax({
+                    url: "@Url.Action("RegistroDetalleComprobante", "Comprobante")",
+                    cache: false,
+                    type: "POST",
+                    data: {
+
+                        idcuenta: $("#select_Cuenta").val(),
+                        detalleglosa: $("#itDetalleGlosa").val(),
+                        debe: parseFloat(Debe).toFixed(2).replace(".", ","),
+                        haber: parseFloat(Haber).toFixed(2).replace(".", ",")
+
+
+
+                    }, success: function () {
+
+
+                    }
+                });
+
+            } else {
+
+                 $.ajax({
+                    url: "@Url.Action("EditarDetalleComprobante", "Comprobante")",
+                    cache: false,
+                    type: "POST",
+                    data: {
+
+                        idcuenta: $("#select_Cuenta").val(),
+                        detalleglosa: $("#itDetalleGlosa").val(),
+                        debe: parseFloat(Debe).toFixed(2).replace(".", ","),
+                        haber: parseFloat(Haber).toFixed(2).replace(".", ",")
+
+
+
+                    }, success: function () {
+
+
+                    }
+                });
+
+
+            }
+
+
+        }
+
+
+
+        function RegistroComrpobante() {
+
+
+
+                $.ajax({
+                    url: "@Url.Action("Registro", "Comprobante")",
+                    cache: false,
+                            type: "POST",
+                            dataType: "script",
+                            data: {
+
+                                fecha: $("#itFecha").val(),
+                                tipocomprobante: $("#select_TipoComprobante").val(),
+                                cambio: $("#itTipoCambio").val(),
+                                moneda: $("#select_Moneda").val(),
+                                glosa: $("#itGlosa").val(),
+
+
+
+
+                    }, success: function () {
+
+                    }
+                });
+
+
+        }
+
+        function ModificarComprobante() {
+
+
+
+                    $.ajax({
+                        url: "@Url.Action("Modificar", "Comprobante")",
+                        cache: false,
+                                type: "POST",
+                                dataType: "script",
+                                data: {
+                                    idcomprobante: $("#itIdComprobante").val(),
+                                    fecha: $("#itFecha").val(),
+                                    tipocomprobante: $("#select_TipoComprobante").val(),
+                                    cambio: $("#itTipoCambio").val(),
+                                    moneda: $("#select_Moneda").val(),
+                                    glosa: $("#itGlosa").val(),
+
+
+
+
+                        }, success: function () {
+
+                        }
+                    });
+
+
+        }
+
+         var Id = null;
+
+       function AbrirModalEliminar(id,nombre) {
+
+            Id = id;
+           // $("#mensaje").hide();
+                if (Id == null) {
+                       return MostrarMensaje("Debe seleccionar la opcion eliminar del detalle");
+                }
+
+            var mesjModalEliminar = "¿Esta seguro que deseas eliminar el detalle  " + nombre + " ?";
+             $("#texto").html(mesjModalEliminar);
+            $("#modalEliminar").modal('show');
+
+            console.log(id)
+
+        }
+
+
+
+         function Eliminar() {
+
+                if ( Id== null) {
+                       return MostrarMensaje("Debe seleccionar para eliminar");
+                }
+
+                $.ajax({
+                        url: "@Url.Action("EliminarDetalleComprobante", "Comprobante")",
+                        cache: false,
+                                type: "POST",
+                                dataType: "script",
+                    data: {
+                        idcuenta: Id
+                    }
+
+                });
+          }
+
+         function AnularComprobante() {
+
+                
+
+                $.ajax({
+                        url: "@Url.Action("Anular", "Comprobante")",
+                        cache: false,
+                                type: "POST",
+                                dataType: "script",
+                    data: {
+                        idcomprobante: $("#itIdComprobante").val()
+                    }
+
+                });
+          }
+
+       function ValidarGestion() {
+
+
+                $.ajax({
+                        url: "@Url.Action("ValidarGestionAbierta", "Gestion")",
+                        cache: false,
+                                type: "POST",
+                                dataType: "script",
+                    data: {
+
+                    }
+
+                });
+          }
+
+
+        function AbrirModalRegistro() {
+           // $("#mensaje").hide();
+            $("#modalEmpresa").modal('show');
+           // $("#tituloEmpresa").html("Registro Gestion");
+            $("#itIdcuenta").val("0");
+           // $("#itNombre").val("");
+            $("#itDebe").prop('disabled', false);
+            $("#itHaber").prop('disabled', false);
+            $("#itDebe").val("");
+            $("#itHaber").val("");
+            $("#itDetalleGlosa").val(DetalleGlosa);
+
+        }
+
+        function AbrirModalEditar(id,cuenta,debe,haber,detalleglosa) {
+           // $("#mensaje").hide();
+             $("#itDebe").prop('disabled', false);
+            $("#itHaber").prop('disabled', false);
+            $("#modalEmpresa").modal('show');
+            $("#itIdcuenta").val(id);
+            $("#itDebe").val(debe);
+            $("#itHaber").val(haber);
+            $("#itDetalleGlosa").val(detalleglosa);
+            $("#select_Cuenta").val(id).trigger('change');
+            if (debe == 0) {
+                $("#itDebe").prop('disabled', true);
+            }
+
+            if (haber == 0) {
+                $("#itHaber").prop('disabled', true);
+            }
+
+
+        }
+
+        function MostrarMensaje(msj) {
+                $("#modalEliminar").modal('hide');
+
+
+                 $(document).Toasts('create', {
+                        class: ' bg-danger',
+                        title: "Alerta",
+                        autohide: true,
+                        delay: 10000,
+                        body: msj
+                    });
+        }
+
+
+         function MostrarMensajeExito(msj) {
+
+                listar();
+                var msjbody = "Se Modifico los Datos Exitosamente";
+                if ($("#itIdGestion").val().length === 0) {
+                    msjbody = "Se Registro los Datos Exitosamente";
+                }
+
+                $(document).Toasts('create', {
+                    class: 'bg-success',
+                    title: msj,
+                    autohide: true,
+                    delay: 10000,
+                    body: msjbody
+                });
+                $("#itIdGestion").val("");
+                $("#itNombre").val("");
+
+                $("#modalEmpresa").modal('hide');
+               // console.log(msj);
+        }
+
+
+        function MostrarMensajeEliminacion(msj) {
+
+                listar();
+                var msjbody = "Se elimino la gestion";
+
+
+                $(document).Toasts('create', {
+                    class: 'bg-success',
+                    title: msj,
+                    autohide: true,
+                    delay: 10000,
+                    body: msjbody
+                });
+
+                $("#modalEliminar").modal('hide');
+               // console.log(msj);
+        }
+
+        function MensajeExitoDetalle(msj) {
+            console.log("exito");
+             $("#modalEmpresa").modal('hide');
+            DetalleGlosa = $("#itDetalleGlosa").val();
+
+            listar();
+        }
+
+        function MensajeEliminarDetalle(msj) {
+               console.log("exito");
+               $("#modalEliminar").modal('hide');
+                listar();
+        }
+
+        function listar()
+        {
+
+
+            $.ajax({
+                url: "@Url.Action("ListarDetalleComprobante", "Comprobante")",
+                cache: false,
+                data: {
+
+                },
+                type: "GET", success: function (html) {
+                    $("#contenedorLista").html(html);
+                    // TableDatatablesRowreorder.init();
+
+                }
+            })
+
+        }
+
+
+
+
+
+</script>
+
+}

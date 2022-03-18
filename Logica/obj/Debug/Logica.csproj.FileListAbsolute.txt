@@ -1,0 +1,17 @@
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Debug\Logica.dll.config
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Debug\Logica.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Debug\Logica.pdb
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Debug\Datos.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Debug\Entidad.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Debug\EntityFramework.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Debug\Datos.pdb
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Debug\Datos.dll.config
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Debug\Entidad.pdb
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Debug\EntityFramework.xml
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\obj\Debug\Logica.csprojAssemblyReference.cache
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\obj\Debug\Logica.csproj.CoreCompileInputs.cache
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\obj\Debug\Logica.csproj.CopyComplete
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\obj\Debug\Logica.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Logica\obj\Debug\Logica.pdb

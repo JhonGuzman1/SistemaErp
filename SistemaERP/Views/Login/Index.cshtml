@@ -1,0 +1,131 @@
+﻿
+@{
+    Layout = null;
+
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Iniciar Sesion</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/adminLte/plugins/fontawesome-free/css/all.min.css")">
+  
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/adminLte/plugins/icheck-bootstrap/icheck-bootstrap.min.css")">
+    
+    <!-- Theme style -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/adminLte/dist/css/adminlte.min.css")">
+    
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <b>Iniciar Sesion</b>
+        </div>
+        <!-- /.login-logo -->
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Ingresa tu usuario y contraseña</p>
+               
+                <form action="javascript:;" method="post">
+                    <div class="alert alert-danger" id="mensaje" hidden>
+                        @if (!string.IsNullOrEmpty(ViewBag.Mensaje))
+                        {
+                            <text>@ViewBag.Mensaje</text>
+                        }
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Usuario" id="Usuario">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" placeholder="Password" id="Password">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <!-- /.col -->
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-block" onclick="IniciarSesion()">Sign In</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+                <!-- /.social-auth-links -->
+
+
+            </div>
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+    <!-- /.login-box -->
+    <!-- jQuery -->
+    <script src="@Url.Content("~/Content/adminLte/plugins/jquery/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Content/adminLte/plugins/bootstrap/js/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content("~/Content/adminLte/dist/js/adminlte.min.js")"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+             $("#mensaje").hide();
+        });
+
+
+
+            function IniciarSesion() {
+               
+
+                    $.ajax({
+                        url: "@Url.Action("IniciarSesion", "Login")",
+                        cache: false,
+                        data: {
+                            usuario: $("#Usuario").val(),
+                            contrasena: $("#Password").val()
+                        },
+                        type: "POST",
+                        dataType: "script"
+                    });
+            }
+
+            function MostrarMensaje(msj) {
+
+                  $(document).Toasts('create', {
+                                class: ' bg-danger',
+                                title: "Alerta",
+                                autohide: true,
+                                delay: 10000,
+                                body: msj
+                  });
+                //$("#mensaje").show();
+               // $("#mensaje").html(msj);
+                console.log("ingresa");
+                      
+            }
+
+            function redireccionar(url) {
+                window.location = url;
+            }
+
+    </script>
+
+</body>
+</html>

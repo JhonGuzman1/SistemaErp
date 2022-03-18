@@ -1,0 +1,61 @@
+﻿@using Datos;
+@using Entidad.Estados;
+@model List<Comprobante>
+
+
+
+<table  class="table table-bordered table-hover" id="tabla_gestion">
+
+    <thead>
+        <tr>
+            <th>SERIE</th>
+            <th>TIPO</th>
+            <th>MONEDA</th>
+            <th>FECHA</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @{
+            foreach (var i in Model)
+            {
+                <tr>
+
+                    <td>@i.Serie</td>
+                    @{
+                        switch (i.TipoComprobante)
+                        {
+                            case (int)TipoComprobante.Ingreso:
+                                <td>Ingreso</td>
+                                break;
+                            case (int)TipoComprobante.Egreso:
+                                <td>Egreso</td>
+                                break;
+                            case (int)TipoComprobante.Traspaso:
+                                <td>Traspaso</td>
+                                break;
+                            case (int)TipoComprobante.Apertura:
+                                <td>Apertura</td>
+                                break;
+                            case (int)TipoComprobante.Ajuste:
+                                <td>Ajuste</td>
+                                break;
+
+                        }
+
+                    }
+
+                    <td>@i.Moneda.Abreviatura</td>
+                    <td>@i.Fecha.ToString("dd/MM/yyyy")</td>
+                    <td>
+
+                        <a href="@Url.Action("EComprobante", "Comprobante", new { idcomprobante = i.IdComprobante })" class="btn btn-secondary "><i class="fas fa-edit"></i> </a>
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+
+</table>

@@ -1,0 +1,54 @@
+﻿@using Datos;
+@using Entidad;
+
+@model List<Empresa>
+@{
+     Empresa empresa = ESesion.ObtenerEmpresaSelect<Empresa>(Session["EmpresaSelect"]);
+    
+}
+
+@section EtiquetaHead
+{
+
+    <!-- Select2 -->
+
+    <link href="@Url.Content("~/Content/adminLte/plugins/select2/css/select2.min.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/adminLte/select2/js/select2.full.min.js")"></script>
+    <link href="@Url.Content("~/Content/adminLte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css")" rel="stylesheet" />
+
+
+}
+
+<select id="select_empresa" class="form-control select2" style="width: 100%;">
+    @{
+
+        if (empresa == null)
+        {
+            <option value="-1" disabled selected hidden style="display: none;"> Seleccione una Empresa</option>
+
+            foreach (var i in Model)
+            {
+                <option value="@i.idEmpresa">@i.Sigla - @i.Nombre</option>
+
+            }
+        }
+        else
+        {
+            foreach (var i in Model)
+            {
+                if (empresa.idEmpresa == i.idEmpresa)
+                {
+                    <option selected value="@i.idEmpresa">@i.Sigla - @i.Nombre</option>
+                }
+                else
+                {
+                    <option value="@i.idEmpresa">@i.Sigla - @i.Nombre</option>
+                }
+
+
+            }
+        }
+
+    }
+</select>
+

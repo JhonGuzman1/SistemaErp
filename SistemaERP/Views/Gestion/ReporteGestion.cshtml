@@ -1,0 +1,204 @@
+﻿@using ReportViewerForMvc;
+@using Datos;
+@model List<Gestion>
+@{
+    ViewBag.Title = "Gestion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section EtiquetaHead
+    {
+
+
+
+    <link href="@Url.Content("~/Content/adminLte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css")" rel="stylesheet" />
+
+
+    <link href="@Url.Content("~/Content/bootstrap-datepicker/css/bootstrap-datepicker.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap-datepicker/css/bootstrap-datepicker3.css")" rel="stylesheet" />
+
+    @* pdf <link href="//cdn.datatables.net/buttons/1.5.6/css/buttons.bootstrap4.min.css" rel="stylesheet">
+    *@
+
+    @*<link href="@Url.Content("~/Content/adminLte/plugins1/datatables/datatables.min.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/adminLte/plugins1/datatables/plugins/bootstrap/datatables.bootstrap.css")" rel="stylesheet" />
+    *@
+}
+
+
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+
+
+
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Gestion</h3>
+
+                    </div>
+                    <div class="card-body">
+
+
+                        <div class="row ">
+                            <div class="form-group">
+                                <a href="@Url.Action("Index", "Gestion")" class="btn btn-secondary" style="margin-left:10px;"> <i class=" fas fa-undo-alt"></i>  </a>
+                            </div>
+
+
+                        </div>
+                        <div class="form-group" style="width: 400px; height: 900px; ">
+                            @Html.ReportViewer(ViewBag.ReporteGestion as Microsoft.Reporting.WebForms.ReportViewer, new { style = "width : 900px; height:900px; " })
+
+                        </div>
+
+
+
+
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+
+                    </div>
+                    <!-- /.card-footer-->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+@section Scripts{
+
+
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables/jquery.dataTables.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js")"></script>
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/js/dataTables.responsive.min.js")"></script>
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/bootstrap-datepicker/js/bootstrap-datepicker.min.js")"></script>
+
+    @* Buttons pdf <script src="//cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.bootstrap4.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.colVis.min.js"></script>*@
+
+
+    @*<script src="@Url.Content("~/Scripts/metronic/global/scripts/datatable.js")"></script>
+
+        <script src="@Url.Content("~/Content/adminLte/plugins1/datatables/datatables.min.js")"></script>
+        <script src="@Url.Content("~/Content/adminLte/plugins1/datatables/plugins/bootstrap/datatables.bootstrap.js")"></script>
+    *@
+    <script type="text/javascript">
+
+
+
+
+
+        $(document).ready(function () {
+
+
+        });
+
+        function redireccionar(url) {
+            window.location = url;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function MostrarMensaje(msj) {
+            $("#modalEliminar").modal('hide');
+
+
+            $(document).Toasts('create', {
+                class: ' bg-danger',
+                title: "Alerta",
+                autohide: true,
+                delay: 10000,
+                body: msj
+            });
+        }
+
+
+        function MostrarMensajeExito(msj) {
+
+            listar();
+            var msjbody = "Se Modifico los Datos Exitosamente";
+            if ($("#itIdGestion").val().length === 0) {
+                msjbody = "Se Registro los Datos Exitosamente";
+            }
+
+            $(document).Toasts('create', {
+                class: 'bg-success',
+                title: msj,
+                autohide: true,
+                delay: 10000,
+                body: msjbody
+            });
+            $("#itIdGestion").val("");
+            $("#itNombre").val("");
+
+            $("#modalEmpresa").modal('hide');
+            // console.log(msj);
+        }
+
+
+        function MostrarMensajeEliminacion(msj) {
+
+            listar();
+            var msjbody = "Se elimino la gestion";
+
+
+            $(document).Toasts('create', {
+                class: 'bg-success',
+                title: msj,
+                autohide: true,
+                delay: 10000,
+                body: msjbody
+            });
+
+            $("#modalEliminar").modal('hide');
+            // console.log(msj);
+        }
+
+
+
+
+
+
+    </script>
+
+}

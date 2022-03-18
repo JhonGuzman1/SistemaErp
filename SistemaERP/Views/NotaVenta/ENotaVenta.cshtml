@@ -1,0 +1,822 @@
+﻿@using Datos;
+@using Entidad;
+@using Entidad.Estados;
+@model Nota
+@{
+    ViewBag.Title = "Nota Venta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Articulo> articulos = ViewBag.Articulo;
+
+
+   // long Serie = ViewBag.NroNotaVenta;
+
+}
+@section EtiquetaHead
+    {
+
+
+
+    <link href="@Url.Content("~/Content/adminLte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css")" rel="stylesheet" />
+
+
+    <link href="@Url.Content("~/Content/bootstrap-datepicker/css/bootstrap-datepicker.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap-datepicker/css/bootstrap-datepicker3.css")" rel="stylesheet" />
+
+    @* pdf <link href="//cdn.datatables.net/buttons/1.5.6/css/buttons.bootstrap4.min.css" rel="stylesheet">
+    *@
+
+    @*<link href="@Url.Content("~/Content/adminLte/plugins1/datatables/datatables.min.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/adminLte/plugins1/datatables/plugins/bootstrap/datatables.bootstrap.css")" rel="stylesheet" />
+    *@
+}
+
+<br />
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Nota De Venta</h3>
+
+                    </div>
+                    <div class="card-body">
+
+                        <input type="text" class="form-control" id="itIdNotaVenta" placeholder="" maxlength="100" value="@Model.IdNota" disabled hidden>
+
+                        @{ if (Model.Estado == (int)EstadoNota.Activo)
+                            {
+
+                                                <div class="row justify-content-end">
+
+
+
+                                                    <div class="form-group">
+                                                        <a href="@Url.Action("ReporteNotaVenta", "NotaVenta", new { idnota = Model.IdNota })" class="btn btn-primary" style="margin-right:10px;"> <i class=" fas fa-print"></i>  </a>
+
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <button class="btn btn-danger form-group  fas fa-trash-alt" data-toggle="modal" data-target="#modalAnularNotaVenta" style="margin-right:10px;"> </button>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <a href="@Url.Action("Index", "NotaVenta")" class="btn btn-secondary" style="margin-right:10px;"> <i class=" fas fa-undo-alt"></i>  </a>
+                                                    </div>
+
+                                                </div>
+
+
+
+                                <div class="row">
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Nro Nota</label>
+                                            <input type="text" class="form-control" id="itSerie" placeholder="" maxlength="100" value="@Model.NroNota" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Estado</label>
+                                            <input type="text" class="form-control" id="itEstado" placeholder="Activo" maxlength="100" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group form-md-line-input form-md-floating-label" data-date-format="dd/mm/yyyy" style="padding-top: 0px;">
+                                            <label class="control-label">Fecha </label>
+                                            <input type="text" id="itFecha" class="form-control-inline date-picker form-control" value="@Model.Fecha.ToString("dd/MM/yyyy")" disabled />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Descripcion</label>
+                                            <input type="text" class="form-control" id="itDescripcion" placeholder="" maxlength="100" value="@Model.Descripcion" disabled>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                                <!--   <div class="row justify-content-end">
+
+                   <div class="form-group">
+                       <button class="btn btn-info" onclick="AbrirModalRegistro()"> <i class=" fas fa-plus-square"></i>  </button>
+                   </div>
+
+               </div>-->
+                                <div class="form-group" id="contenedorLista">
+                                    @Html.Partial("ListaDetalleNotaVenta", new List<EDetalleNotaVenta>())
+                                </div>
+
+
+
+
+                            }
+                            else
+                            {
+                    <div class="row justify-content-end">
+
+                        @* <div class="form-group">
+            <a href="@Url.Action("ReporteGestion", "Gestion")" class="btn btn-primary" style="margin-right:10px;"> <i class=" fas fa-print"></i>  </a>
+
+        </div>*@
+
+                        <div class="form-group">
+                            <a href="@Url.Action("ReporteNotaVenta", "NotaVenta", new { idnota = Model.IdNota })" class="btn btn-primary" style="margin-right:10px;"> <i class=" fas fa-print"></i>  </a>
+
+                        </div>
+
+                        <div class="form-group">
+                            <a href="@Url.Action("Index", "NotaVenta")" class="btn btn-secondary" style="margin-right:10px;"> <i class=" fas fa-undo-alt"></i>  </a>
+                        </div>
+
+                    </div>
+
+
+
+                                <div class="row">
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Nro Nota</label>
+                                            <input type="text" class="form-control" id="itSerie" placeholder="" maxlength="100" value="@Model.NroNota" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Estado</label>
+                                            <input type="text" class="form-control" id="itEstado" placeholder="Anulado" maxlength="100" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group form-md-line-input form-md-floating-label" data-date-format="dd/mm/yyyy" style="padding-top: 0px;">
+                                            <label class="control-label">Fecha </label>
+                                            <input type="text" id="itFecha" class="form-control-inline date-picker form-control" value="@Model.Fecha.ToString("dd/MM/yyyy")" disabled />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Descripcion</label>
+                                            <input type="text" class="form-control" id="itDescripcion" placeholder="" maxlength="100" value="@Model.Descripcion" disabled>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                                <!--  <div class="row justify-content-end">
+
+                  <div class="form-group">
+                      <button class="btn btn-info" onclick="AbrirModalRegistro()"> <i class=" fas fa-plus-square"></i>  </button>
+                  </div>
+
+              </div>-->
+                                <div class="form-group" id="contenedorLista">
+                                    @Html.Partial("ListaDetalleNotaVenta", new List<EDetalleNotaVenta>())
+                                </div>
+                            }
+
+                        }
+
+
+
+
+
+
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+
+                    </div>
+                    <!-- /.card-footer-->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<div class="modal fade" id="modalEmpresa">
+    <div class="modal-dialog modal-dialog-centered modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="tituloEmpresa"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form role="form">
+
+
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-md-12 form-group alert alert-danger" id="mensajeModal" style="display:none">
+
+                        </div>
+
+                        <input type="text" class="form-control" id="itIdcuenta" hidden>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Articulo</label>
+                                <select class="form-control select2" style="width: 100%;" id="select_Articulo" onchange="listarLote()">
+
+                                    <option value="-1">Seleccionar Articulo</option>
+                                  @*  @{
+                                        foreach (var i in articulos)
+                                        {
+                                            <option value="@i.IdArticulo">@i.Nombre </option>
+                                        }
+                                    }*@
+
+                                </select>
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <label class="control-label">Lote</label>
+                            <div class="form-group" id="contenedorLote">
+
+                            @*    @Html.Partial("ListarLote", new List<Lote>())*@
+
+                            </div>
+
+                        </div>
+
+                       
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Cantidad</label>
+                                <input type="number" class="form-control" id="itCantidad">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" id="contenedorArticulo">
+                             @*   @Html.Partial("ListarArticulo", new Articulo())*@
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+
+                </div>
+            </form>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary" onclick="RegistroDetalleComprobante()">Guardar </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+
+
+
+
+
+
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+
+
+<div class="modal fade" id="modalEliminar">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirmacion</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control" id="inputIdGestion" hidden>
+                <p id="texto"></p>
+            </div>
+            <div class="modal-footer ">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="Eliminar()">Aceptar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+<div class="modal fade" id="modalAnularNotaVenta">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirmacion</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <p>¿Esta seguro que deseas anular la nota de compra ? </p>
+            </div>
+            <div class="modal-footer ">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="AnularNotaVenta()">Aceptar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+@section Scripts{
+
+
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables/jquery.dataTables.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js")"></script>
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/js/dataTables.responsive.min.js")"></script>
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/bootstrap-datepicker/js/bootstrap-datepicker.min.js")"></script>
+
+    @* Buttons pdf <script src="//cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.bootstrap4.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.colVis.min.js"></script>*@
+
+
+    @*<script src="@Url.Content("~/Scripts/metronic/global/scripts/datatable.js")"></script>
+
+        <script src="@Url.Content("~/Content/adminLte/plugins1/datatables/datatables.min.js")"></script>
+        <script src="@Url.Content("~/Content/adminLte/plugins1/datatables/plugins/bootstrap/datatables.bootstrap.js")"></script>
+    *@
+<script type="text/javascript">
+
+
+
+        var TableDatatablesRowreorder = function () {
+
+            var initTable1 = function () {
+                var table = $('#tabla_detalleComprobante');
+
+                var oTable = table.dataTable({
+
+                    // Internationalisation. For more info refer to http://datatables.net/manual/i18n
+                    "language": {
+                        "aria": {
+                            "sortAscending": ": activate to sort column ascending",
+                            "sortDescending": ": activate to sort column descending"
+                        },
+                        "emptyTable": "No hay datos para mostrar",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Gestion",
+                        "infoEmpty": "No hay datos para mostrar",
+                        "infoFiltered": "(Filtrado de _MAX_ total Gestion)",
+                        "lengthMenu": "_MENU_ Gestion",
+                        "search": "Buscar:",
+                        "zeroRecords": "No se encontraron coincidencias",
+
+                    },
+
+                    "order": [],
+                    "columnDefs": [ {
+                      "targets"  : 'no-sort',
+                      "orderable": false,
+                    }],
+
+                    // Or you can use remote translation file
+                    //"language": {
+                    //   url: '//cdn.datatables.net/plug-ins/3cfcc339e89/i18n/Portuguese.json'
+                    //},
+
+                    // setup buttons extentension: http://datatables.net/extensions/buttons/
+                    /* buttons: [
+                         //{ extend: 'print', className: 'btn dark btn-outline', exportOptions: { columns: [0, 1, 2, 3] } },
+                         { extend: 'copy', className: 'btn purple btn-outline ', exportOptions: { columns: [0, 1, 2, 3] } },
+                         { extend: 'pdf', className: 'btn green btn-outline', exportOptions: { columns: [0, 1, 2, 3] } },
+                         { extend: 'csv', className: 'btn purple btn-outline ', exportOptions: { columns: [0, 1, 2, 3] } },
+                         { extend: 'excel', className: 'btn purple btn-outline ', exportOptions: { columns: [0, 1, 2, 3] } }
+                     ],*/
+                   /* columnDefs: [
+                        { orderable: false, targets: [3] }
+                    ],*/
+                    // setup rowreorder extension: http://datatables.net/extensions/rowreorder/
+
+                  /*  "order": [
+                        [0, 'asc']
+                    ],*/
+
+                    "lengthMenu": [
+                        [5, 10, 15, 20, -1],
+                        [5, 10, 15, 20, "Todos"] // change per page values here
+                    ],
+                    // set the initial value
+                    "pageLength": 10,
+
+                    "dom": "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
+
+                    // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout
+                    // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js).
+                    // So when dropdowns used the scrollable div should be removed.
+                    //"dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r>t<'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
+                });
+            }
+
+            return {
+
+                //main function to initiate the module
+                init: function () {
+
+                    if (!$().dataTable) {
+                        return;
+                    }
+
+                    initTable1();
+                }
+
+            };
+
+        }();
+
+        $(document).ready(function () {
+           // TableDatatablesRowreorder.init();
+
+            listar();
+            $("#itFechaVencimiento").datepicker();
+            $("#itFecha").datepicker();
+
+            $("#select_Articulo").select2();
+
+
+
+        });
+
+        var DetalleGlosa = "";
+        function redireccionar(url) {
+            window.location = url;
+        }
+
+        function Ingresar(Id) {
+
+            $.ajax({
+                    url: "@Url.Action("IngresarGestion", "Gestion")",
+                    cache: false,
+                            type: "POST",
+                            dataType: "script",
+                            data: {
+                                id: Id
+                            }
+
+            });
+        }
+
+    function RegistroDetalleComprobante() {
+
+            var idCuenta = $("#select_Articulo").val();
+            if (idCuenta === -1) {
+                  return MostrarMensaje("Debe seleccionar una cuenta");
+            }
+
+            let Cantidad = $("#itCantidad").val();
+            let Precio = $("#itPrecio").val();
+            let CuentaId = $("#itIdcuenta").val();
+            if (CuentaId == 0) {
+
+                $.ajax({
+                    url: "@Url.Action("RegistroDetalleNotaVenta", "NotaVenta")",
+                    cache: false,
+                    type: "POST",
+                    data: {
+
+                        idarticulo: $("#select_Articulo").val(),
+                        nrolote: $("#select_Lote").val(),
+                        cantidad: Cantidad,
+                        precio: parseFloat(Precio).toFixed(2).replace(".", ",")
+
+
+                    }, success: function () {
+
+
+                    }
+                });
+
+            } else {
+
+                 $.ajax({
+                    url: "@Url.Action("EditarDetalleNotaVenta", "NotaVenta")",
+                    cache: false,
+                    type: "POST",
+                    data: {
+
+                        idarticulo: $("#select_Articulo").val(),
+                        nrolote: $("#select_Lote").val(),
+                        cantidad: Cantidad,
+                        precio: parseFloat(Precio).toFixed(2).replace(".", ",")
+
+
+
+                    }, success: function () {
+
+
+                    }
+                });
+
+
+            }
+
+
+        }
+
+
+
+        function RegistroComrpobante() {
+
+
+
+                $.ajax({
+                    url: "@Url.Action("Registro", "NotaVenta")",
+                    cache: false,
+                            type: "POST",
+                            dataType: "script",
+                            data: {
+
+                                fecha: $("#itFecha").val(),
+                                descripcion: $("#itDescripcion").val(),
+
+
+
+
+                    }, success: function () {
+
+                    }
+                });
+
+
+        }
+
+    var Id = null;
+    var IdNroLote = null;
+
+       function ArticulosLoteModalEliminar(id,nombre,nrolote) {
+
+           Id = id;
+           IdNroLote = nrolote;
+           // $("#mensaje").hide();
+                if (Id == null) {
+                       return MostrarMensaje("Debe seleccionar la opcion eliminar del detalle");
+                }
+
+           if (IdNroLote == null) {
+               return MostrarMensaje("Debe seleccionar la opcion eliminar del detalle");
+           }
+
+           var mesjModalEliminar = "¿Esta seguro que deseas eliminar el detalle " + nombre + " lote " + IdNroLote + "?";
+             $("#texto").html(mesjModalEliminar);
+            $("#modalEliminar").modal('show');
+
+           console.log(IdNroLote);
+
+        }
+
+
+
+         function Eliminar() {
+
+             console.log(Id);
+             console.log(IdNroLote);
+                if ( Id== null) {
+                       return MostrarMensaje("Debe seleccionar para eliminar");
+                 }
+             if (IdNroLote == null) {
+                     return MostrarMensaje("Debe seleccionar para eliminar");
+                 }
+
+                $.ajax({
+                        url: "@Url.Action("EliminarDetalleNotaVenta", "NotaVenta")",
+                        cache: false,
+                                type: "POST",
+                                dataType: "script",
+                    data: {
+                        idarticulo: Id,
+                        nrolote: IdNroLote
+                    }
+
+                });
+          }
+
+
+
+        function AbrirModalRegistro() {
+           // $("#mensaje").hide();
+            $("#modalEmpresa").modal('show');
+           // $("#tituloEmpresa").html("Registro Gestion");
+            $("#itIdcuenta").val("0");
+           // $("#itNombre").val("");
+
+            $("#itPrecio").val("");
+            $("#itCantidad").val("");
+            $("#itFechaVencimiento").val("");
+           // $("#select_Articulo").val(-1).trigger('change');
+        }
+
+        function AbrirModalEditar(id,cuenta,debe,haber,detalleglosa) {
+           // $("#mensaje").hide();
+             $("#itDebe").prop('disabled', false);
+            $("#itHaber").prop('disabled', false);
+            $("#modalEmpresa").modal('show');
+            $("#itIdcuenta").val(id);
+            $("#itDebe").val(debe);
+            $("#itHaber").val(haber);
+            $("#itDetalleGlosa").val(detalleglosa);
+            $("#select_Cuenta").val(id).trigger('change');
+            if (debe == 0) {
+                $("#itDebe").prop('disabled', true);
+            }
+
+            if (haber == 0) {
+                $("#itHaber").prop('disabled', true);
+            }
+
+
+        }
+
+        function MostrarMensaje(msj) {
+                $("#modalEliminar").modal('hide');
+
+
+                 $(document).Toasts('create', {
+                        class: ' bg-danger',
+                        title: "Alerta",
+                        autohide: true,
+                        delay: 10000,
+                        body: msj
+                    });
+        }
+
+
+         function MostrarMensajeExito(msj) {
+
+                listar();
+                var msjbody = "Se Modifico los Datos Exitosamente";
+                if ($("#itIdGestion").val().length === 0) {
+                    msjbody = "Se Registro los Datos Exitosamente";
+                }
+
+                $(document).Toasts('create', {
+                    class: 'bg-success',
+                    title: msj,
+                    autohide: true,
+                    delay: 10000,
+                    body: msjbody
+                });
+                $("#itIdGestion").val("");
+                $("#itNombre").val("");
+
+                $("#modalEmpresa").modal('hide');
+               // console.log(msj);
+        }
+
+
+        function MostrarMensajeEliminacion(msj) {
+
+                listar();
+                var msjbody = "Se elimino la gestion";
+
+
+                $(document).Toasts('create', {
+                    class: 'bg-success',
+                    title: msj,
+                    autohide: true,
+                    delay: 10000,
+                    body: msjbody
+                });
+
+                $("#modalEliminar").modal('hide');
+               // console.log(msj);
+        }
+
+        function MensajeExitoDetalle(msj) {
+            console.log("exito");
+             $("#modalEmpresa").modal('hide');
+            DetalleGlosa = $("#itDetalleGlosa").val();
+
+            listar();
+        }
+
+        function MensajeEliminarDetalle(msj) {
+               console.log("exito");
+               $("#modalEliminar").modal('hide');
+                listar();
+        }
+
+        function listar()
+        {
+
+
+            $.ajax({
+                url: "@Url.Action("ListarDetalleNotaVenta", "NotaVenta")",
+                cache: false,
+                data: {
+
+                },
+                type: "GET", success: function (html) {
+                    $("#contenedorLista").html(html);
+                    // TableDatatablesRowreorder.init();
+
+                }
+            })
+
+        }
+
+
+        function listarLote()
+        {
+
+            console.log("prueba1")
+            let IdArticulo = $("#select_Articulo").val();
+
+            if (IdArticulo == -1) {
+                return MostrarMensaje("Seleccione una articulo")
+            }
+
+
+            $.ajax({
+                url: "@Url.Action("ListarLote", "NotaVenta")",
+                cache: false,
+                data: {
+                    idarticulo: IdArticulo
+                },
+                type: "GET", success: function (html) {
+                    $("#contenedorLote").html(html);
+                    $("#select_Lote").select2();
+                }
+            })
+
+
+            $.ajax({
+                url: "@Url.Action("ListarArticulo", "NotaVenta")",
+                cache: false,
+                data: {
+                    idarticulo: IdArticulo
+                },
+                type: "GET", success: function (html) {
+                    $("#contenedorArticulo").html(html);
+                }
+            })
+
+            console.log("prueba2")
+
+        }
+
+
+        function AnularNotaVenta() {
+
+
+
+                $.ajax({
+                        url: "@Url.Action("Anular", "NotaVenta")",
+                        cache: false,
+                                type: "POST",
+                                dataType: "script",
+                    data: {
+                        idnota: $("#itIdNotaVenta").val()
+                    }
+
+                });
+          }
+
+
+</script>
+
+}

@@ -1,0 +1,12 @@
+C:\Users\Sistemas\source\repos\SistemaERP\Entidad\bin\Debug\Entidad.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Entidad\bin\Debug\Entidad.pdb
+C:\Users\Sistemas\source\repos\SistemaERP\Entidad\bin\Debug\Datos.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Entidad\bin\Debug\EntityFramework.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Entidad\bin\Debug\Datos.pdb
+C:\Users\Sistemas\source\repos\SistemaERP\Entidad\bin\Debug\Datos.dll.config
+C:\Users\Sistemas\source\repos\SistemaERP\Entidad\bin\Debug\EntityFramework.xml
+C:\Users\Sistemas\source\repos\SistemaERP\Entidad\obj\Debug\Entidad.csprojAssemblyReference.cache
+C:\Users\Sistemas\source\repos\SistemaERP\Entidad\obj\Debug\Entidad.csproj.CoreCompileInputs.cache
+C:\Users\Sistemas\source\repos\SistemaERP\Entidad\obj\Debug\Entidad.csproj.CopyComplete
+C:\Users\Sistemas\source\repos\SistemaERP\Entidad\obj\Debug\Entidad.dll
+C:\Users\Sistemas\source\repos\SistemaERP\Entidad\obj\Debug\Entidad.pdb

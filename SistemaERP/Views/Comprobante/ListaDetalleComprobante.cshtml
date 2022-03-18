@@ -1,0 +1,114 @@
+﻿@using Datos;
+@using Entidad.Estados;
+@using Entidad;
+@model List<EDetalleComprobante>
+@{
+
+    EDetalleTotal detalleTotal = Session["DetalleTotal"] as EDetalleTotal;
+    DetalleEstado detalleEstado = Session["EstadoComprobante"] as DetalleEstado;
+}
+
+<div style="height:250px; overflow: scroll;">
+
+    <table class="table table-bordered table-hover" id="tabla_detalleComprobante">
+
+        <thead>
+            <tr>
+                <th>CUENTA</th>
+                <th>GLOSA</th>
+                <th>DEBE</th>
+                <th>HABER</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @{
+                foreach (var i in Model)
+                {
+                    <tr>
+
+                        <td>@i.Cuenta</td>
+                        <td>@i.Glosa</td>
+
+                        <td style="text-align:right;">@(i.Debe)</td>
+                        <td style="text-align:right;">@i.Haber</td>
+                        <td>
+                            @{
+                                if (detalleEstado.Estado == (int)EstadoComprobante.Abierto)
+                                {
+                                    <button class="btn btn-secondary form-group fas fa-edit" onclick="AbrirModalEditar('@i.IdCuenta','@i.Cuenta','@i.Debe','@i.Haber','@i.Glosa')"> </button>
+                                }
+                            }
+
+                        </td>
+                        <td>
+                            @{
+                                if (detalleEstado.Estado == (int)EstadoComprobante.Abierto)
+                                {
+                                    <button class="btn btn-danger form-group  fas fa-trash-alt" onclick="AbrirModalEliminar('@i.IdCuenta','@i.Cuenta')"> </button>
+                                }
+                            }
+
+                        </td>
+                    </tr>
+
+                }
+
+
+            }
+
+        </tbody>
+
+    </table>
+
+
+</div>
+    
+    <br />
+    <div class="row justify-content-center" style="padding-left:60px">
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>TOTALES:</label>
+            </div>
+        </div>
+
+        @{
+
+            if (detalleTotal != null)
+            {
+                <div class="col-md-2">
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" id="itTotalDebe" value="@detalleTotal.TotalDebe" style="text-align:right;" disabled>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" id="itTotalHaber" value="@detalleTotal.TotalHaber" style="text-align:right;" disabled>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-2">
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" id="itTotalDebe" style="text-align:right;" disabled>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" id="itTotalHaber" style="text-align:right;" disabled>
+                    </div>
+                </div>
+            }
+
+        }
+
+
+
+    </div>

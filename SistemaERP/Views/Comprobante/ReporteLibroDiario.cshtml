@@ -1,0 +1,286 @@
+﻿@using ReportViewerForMvc;
+@using Datos;
+@using Entidad;
+
+@{
+    ViewBag.Title = "Reporte Libro Diario";
+    // Gestion gestion = ESesion.ObtenerGestion<Gestion>(Session["Gestion"]);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<Gestion> gestiones = ViewBag.Gestion;
+
+    List<EmpresaMoneda> empresaMonedas = ViewBag.EmpresaMonedas;
+
+    EmpresaMoneda emoneda = empresaMonedas.First();
+
+}
+@section EtiquetaHead
+    {
+
+
+
+    <link href="@Url.Content("~/Content/adminLte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css")" rel="stylesheet" />
+
+
+    <link href="@Url.Content("~/Content/bootstrap-datepicker/css/bootstrap-datepicker.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap-datepicker/css/bootstrap-datepicker3.css")" rel="stylesheet" />
+
+    @* pdf <link href="//cdn.datatables.net/buttons/1.5.6/css/buttons.bootstrap4.min.css" rel="stylesheet">
+    *@
+
+    @*<link href="@Url.Content("~/Content/adminLte/plugins1/datatables/datatables.min.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/adminLte/plugins1/datatables/plugins/bootstrap/datatables.bootstrap.css")" rel="stylesheet" />
+    *@
+}
+
+
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+
+
+
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                          Reporte Libro Diario
+                        </h3>
+
+                    </div>
+                    <div class="card-body">
+
+
+                        <div class="row ">
+
+
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Gestion</label>
+                                    <select class="form-control select2" style="width: 100%;" id="select_Gestion" onchange="listarPeriodo()">
+                                        <option value="-1">Seleccione una gestion</option>
+                                        @{
+                                            foreach (var i in gestiones)
+                                            {
+
+                                                <option value="@i.IdGestion">@i.Nombre</option>
+
+                                            }
+                                        }
+
+
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="control-label">Periodo</label>
+                                <div class="form-group" id="contenedorPeriodo">
+
+                                    @Html.Partial("ListarPeriodo", new List<Periodo>())
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Moneda</label>
+                                    <select class="form-control select2" style="width: 100%;" id="select_Moneda">
+
+                                        @{
+                                            foreach (var i in empresaMonedas)
+                                            {
+
+                                                <option value="@i.IdMonedaPrincipal">@i.Moneda.Abreviatura</option>
+                                                if (i.IdMonedaAlternativa != null)
+                                                {
+                                                    <option value="@i.IdMonedaAlternativa">@i.Moneda1.Abreviatura</option>
+                                                }
+                                            }
+                                        }
+
+
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    
+                                        <button class="btn btn-primary" onclick="ReporteLibroDiario()"> <i class=" fas fa-print"></i> Generar Libro Diario </button>
+
+                                    
+                                </div>
+                            </div>
+
+                           
+
+
+                        </div>
+
+
+
+
+                        <div class="form-group" id="contenedor" style="width: 900px; height: 900px;">
+                            @Html.Partial("LibroDiarioParcial")
+                        </div>
+
+
+
+
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+
+                    </div>
+                    <!-- /.card-footer-->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts{
+
+
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables/jquery.dataTables.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js")"></script>
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/js/dataTables.responsive.min.js")"></script>
+    <script src="@Url.Content("~/Content/adminLte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/bootstrap-datepicker/js/bootstrap-datepicker.min.js")"></script>
+
+    @* Buttons pdf <script src="//cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.bootstrap4.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.colVis.min.js"></script>*@
+
+
+    @*<script src="@Url.Content("~/Scripts/metronic/global/scripts/datatable.js")"></script>
+
+        <script src="@Url.Content("~/Content/adminLte/plugins1/datatables/datatables.min.js")"></script>
+        <script src="@Url.Content("~/Content/adminLte/plugins1/datatables/plugins/bootstrap/datatables.bootstrap.js")"></script>
+    *@
+<script type="text/javascript">
+
+
+
+
+        $(document).ready(function () {
+
+            $("#select_Gestion").select2();
+            $("#select_Moneda").select2();
+            $("#select_periodo").select2();
+        });
+
+        function redireccionar(url) {
+            window.location = url;
+        }
+
+
+
+
+
+        function listarPeriodo()
+        {
+
+            let IdGestion = $("#select_Gestion").val();
+
+            if (IdGestion == -1) {
+                return MostrarMensaje("Seleccione una gestion")
+            }
+
+            $.ajax({
+                url: "@Url.Action("ListarPeriodo", "Comprobante")",
+                cache: false,
+                data: {
+                    idgestion: IdGestion
+                },
+                type: "GET", success: function (html) {
+                    $("#contenedorPeriodo").html(html);
+                    $("#select_periodo").select2();
+                }
+            })
+
+        }
+
+
+        function ReporteLibroDiario()
+        {
+
+            let IdGestion = $("#select_Gestion").val();
+            let IdPeriodo = $("#select_periodo").val();
+            let IdMoneda = $("#select_Moneda").val();
+            if (IdGestion == -1) {
+                return MostrarMensaje("Seleccione una gestion")
+            }
+            if (IdPeriodo == null) {
+                IdPeriodo = 0;
+            }
+
+
+            $.ajax({
+                url: "@Url.Action("ReporteDeLibroDiario", "Comprobante")",
+                cache: false,
+                data: {
+                    idgestion: IdGestion,
+                    idperiodo: IdPeriodo,
+                    idmoneda: IdMoneda
+                },
+                type: "GET", success: function (html) {
+                    $("#contenedor").html(html);
+                  
+                }
+            })
+
+        }
+
+
+        function MostrarMensaje(msj) {
+                $("#modalEliminar").modal('hide');
+
+
+                 $(document).Toasts('create', {
+                        class: ' bg-danger',
+                        title: "Alerta",
+                        autohide: true,
+                        delay: 10000,
+                        body: msj
+                    });
+        }
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+}
+

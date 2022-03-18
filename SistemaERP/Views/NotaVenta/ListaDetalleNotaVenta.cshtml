@@ -1,0 +1,114 @@
+﻿@using Datos;
+@using Entidad.Estados;
+@using Entidad;
+@model List<EDetalleNotaVenta>
+@{
+
+    EDetalleNotaVentaTotal detalleTotal = Session["DetalleTotalVenta"] as EDetalleNotaVentaTotal;
+    EDetalleNotaVentaVer detalleEstado = Session["NotaVentaVer"] as EDetalleNotaVentaVer;
+}
+
+
+<div style="height:200px; overflow: scroll;">
+    <table class="table table-bordered table-hover" id="tabla_detalleComprobante">
+
+        <thead>
+            <tr>
+                <th>ARTICULO</th>
+                <th>NRO LOTE</th>
+                <th>CANTIDAD</th>
+                <th>PRECIO</th>
+                <th>SUBTOTAL</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @{
+                foreach (var i in Model)
+                {
+                    <tr>
+
+                        <td>@i.NombreArticulo</td>
+                        <td>@i.NroLote</td>
+                        <td>@i.Cantidad</td>
+                        <td style="text-align:right;">@i.Precio</td>
+                        <td style="text-align:right;">@i.SubTotal</td>
+                        <td>
+                            @{
+                                if (detalleEstado.Ver == 0)
+                                {
+                                    <button class="btn btn-secondary form-group fas fa-edit" onclick="AbrirModalEditar('@i.IdArticulo', '@i.NombreArticulo', '@i.Cantidad', '@i.Precio', '@i.NroLote')"> </button>
+                                }
+                            }
+
+                        </td>
+                        <td>
+                            @{
+                                if (detalleEstado.Ver == 0)
+                                {
+                                    <button class="btn btn-danger form-group  fas fa-trash-alt" onclick="ArticulosLoteModalEliminar('@i.IdArticulo', '@i.NombreArticulo', '@i.NroLote')"> </button>
+                                }
+                            }
+
+                        </td>
+                    </tr>
+
+                }
+
+
+            }
+
+        </tbody>
+
+    </table>
+</div>
+    <br />
+    <div class="row justify-content-end">
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>TOTALES:</label>
+            </div>
+        </div>
+
+        @{
+
+            if (detalleTotal != null)
+            {
+
+                <div class="col-md-2">
+                    <div class="form-group">
+
+                        <input type="number" class="form-control" id="itTotalHaber" style="text-align:right;" value="@detalleTotal.Total" disabled>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+
+
+                    </div>
+                </div>
+            }
+            else
+            {
+
+                <div class="col-md-2">
+                    <div class="form-group">
+
+                        <input type="number" class="form-control" id="itTotalHaber" style="text-align:right;" disabled>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+
+
+                    </div>
+                </div>
+            }
+
+        }
+
+
+
+    </div>

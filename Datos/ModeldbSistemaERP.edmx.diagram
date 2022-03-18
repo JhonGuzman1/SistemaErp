@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="812483b54b62450cba69c77afd1b4e25" Name="Diagram1" ZoomLevel="80">
+        <EntityTypeShape EntityType="dbSistemaErpModel.Empresa" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSistemaErpModel.Gestion" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSistemaErpModel.Periodo" Width="1.5" PointX="9.625" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSistemaErpModel.Usuario" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Empresa__IdUsuar__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Gestion__IdEmpre__3D5E1FD2" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Gestion__IdUsuar__3C69FB99" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Periodo__IdGesti__412EB0B6" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Periodo__IdUsuar__403A8C7D" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="dbSistemaErpModel.Cuenta" Width="1.5" PointX="7.5" PointY="0.5" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Cuenta__IdCuenta__68487DD7" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Cuenta__IdEmpres__6754599E" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Cuenta__IdUsuari__66603565" />
+        <EntityTypeShape EntityType="dbSistemaErpModel.EmpresaMoneda" Width="1.5" PointX="0.5" PointY="6.5" />
+        <EntityTypeShape EntityType="dbSistemaErpModel.Moneda" Width="1.5" PointX="6.25" PointY="5.5" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__EmpresaMo__IdEmp__7D439ABD" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__EmpresaMo__IdMon__7E37BEF6" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__EmpresaMo__IdMon__7F2BE32F" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__EmpresaMo__IdUsu__00200768" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Moneda__IdUsuari__6FE99F9F" />
+        <EntityTypeShape EntityType="dbSistemaErpModel.Comprobante" Width="1.5" PointX="8.5" PointY="5.75" />
+        <EntityTypeShape EntityType="dbSistemaErpModel.DetalleComprobante" Width="1.5" PointX="12.75" PointY="0.875" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Comproban__IdEmp__160F4887" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Comproban__IdMon__17F790F9" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Comproban__IdUsu__17036CC0" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__DetalleCo__IdCom__1BC821DD" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__DetalleCo__IdCue__1CBC4616" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__DetalleCo__IdUsu__1AD3FDA4" />
+        <EntityTypeShape EntityType="dbSistemaErpModel.Articulo" Width="1.5" PointX="6.625" PointY="9.75" />
+        <EntityTypeShape EntityType="dbSistemaErpModel.Categoria" Width="1.5" PointX="11.875" PointY="10" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Articulo__IdEmpr__2DE6D218" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Articulo__IdUsua__2EDAF651" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Categoria__IdCat__2B0A656D" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Categoria__IdEmp__29221CFB" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Categoria__IdUsu__2A164134" />
+        <AssociationConnector Association="dbSistemaErpModel.ArticuloCategoria" />
+        <EntityTypeShape EntityType="dbSistemaErpModel.DetalleVenta" Width="2.125" PointX="16.25" PointY="10" />
+        <EntityTypeShape EntityType="dbSistemaErpModel.Lote" Width="1.5" PointX="9.875" PointY="1.375" />
+        <EntityTypeShape EntityType="dbSistemaErpModel.Nota" Width="1.5" PointX="5.25" PointY="0.75" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__DetalleVe__IdArt__540C7B00" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Lote__IdArticulo__503BEA1C" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__DetalleVe__IdNot__55F4C372" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Nota__IdEmpresa__4C6B5938" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Lote__IdNota__51300E55" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Nota__IdUsuario__4D5F7D71" />
+        <AssociationConnector Association="dbSistemaErpModel.FK__Nota__IdComproba__0697FACD" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
